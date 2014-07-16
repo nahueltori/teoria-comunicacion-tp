@@ -1,21 +1,12 @@
 package core;
-import java.util.Iterator;
-import java.util.List;
 
 
 public abstract class Individuo{
 
-  protected List<Float> genes;
-
   protected float aptitud;
-
 
   public Individuo(){
     evaluarAptitud();
-  }
-
-  public List<Float> getListaGenes(){
-    return genes;
   }
 
   public float getAptitud(){
@@ -24,14 +15,7 @@ public abstract class Individuo{
 
   public String toString(){
 	  String salida = "Individuo - Aptitud: ";
-	  Float gen;
 	  salida += (new Float(aptitud)).toString();
-	  salida += " | Genes: ";
-	  Iterator<Float> it = genes.iterator();
-	  while(it.hasNext()){
-		  gen = (Float)it.next();
-		  salida = salida + gen.toString() + " ";
-	  }
 	  return salida;
   }
 
