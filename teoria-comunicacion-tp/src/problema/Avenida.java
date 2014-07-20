@@ -1,5 +1,6 @@
 package problema;
 
+import java.util.Date;
 import java.util.List;
 
 public class Avenida {
@@ -11,11 +12,12 @@ public class Avenida {
 
 	public Avenida(){
 		//TODO: Crear tramos de trafico y unirlos
+		
 		//TODO: Crear semaforos en los tramos deseados
 	}
 	
 	/**
-	 * Método que se encarga de generar aleatoriamente tráfico, dependiendo del horario del dìa.
+	 * Metodo que se encarga de generar aleatoriamente trafico, dependiendo del horario del dia.
 	 */
 	private void crearTraficoAleatoriamente(Date hora){
 		
