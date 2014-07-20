@@ -35,17 +35,17 @@ public class Trafico {
        * Cada auto avanza su posicion en metros segun la velocidad que lleva y el tiempo transcurrido.
        * Si algun auto llega hasta el final del tramo, se envia al tramo siguiente. Si no hay tramo 
        * siguiente, se elimina.
-       * Tambien setea a cada auto la velocidad aconsejada por la Onda Verde.
-       * A la vez, recolecta datos para guardar la estadistica del estado de trafico.
+       * TODO: Tambien setea a cada auto la velocidad aconsejada por la Onda Verde.
+       * TODO: A la vez, recolecta datos para guardar la estadistica del estado de trafico.
        * El parametro tiempo es la cantidad de segundos transcurridos en el ciclo.
-       * El parametro velocidadestá en KM/H, y es la sugerida por la Onda Verde para que transiten los autos.
+       * El parametro velocidad está en KM/H, y es la sugerida por la Onda Verde para que transiten los autos.
        */
       public void cicloTrafico(int tiempo, int velocidad){
             
       }
 
       /**
-       * TODO: Metodo que devuelve un porcentaje de cantidad de trafico en el tramo representado.
+       * Metodo que devuelve un porcentaje de cantidad de trafico en el tramo representado.
        */
       public float estadoTrafico(){
             return estadoTrafico;
