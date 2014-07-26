@@ -1,6 +1,5 @@
 package problema;
 
-import java.util.Date;
 import java.util.Hashtable;
 
 import core.Individuo;
@@ -10,30 +9,75 @@ public class Semaforo extends Individuo {
 		ROJO, AMARILLO, VERDE
 	}
 
-	Trafico tramo;
-	Color estado;
-	Date reloj;
-	Hashtable<Color, Integer> estadoTiempo;
+	private Color estado;
+	private int contadorEstado;
+	private Hashtable<Color, Integer> tiempoEstado;
 	
-	public Semaforo(Trafico tramo){
-		this.tramo = tramo;
+	public Semaforo(){
+		contadorEstado = 0;
 		this.estado = Color.ROJO;
-		reloj = new Date(0);
-		estadoTiempo = new Hashtable<Color, Integer>();
-		estadoTiempo.put(Color.ROJO, new Integer(120));
-		estadoTiempo.put(Color.AMARILLO, new Integer(30));
-		estadoTiempo.put(Color.VERDE, new Integer(120));
+		tiempoEstado = new Hashtable<Color, Integer>();
+		tiempoEstado.put(Color.ROJO, new Integer(120));
+		tiempoEstado.put(Color.AMARILLO, new Integer(30));
+		tiempoEstado.put(Color.VERDE, new Integer(120));
 	}
 	
 	/**
 	 * Metodo que realiza un ciclo del tiempo indicado, cambiando al color siguiente si corresponde.
 	 * @param tiempo
 	 */
-	public void cicloSemaforo(int tiempo){
-		
+	synchronized public void cicloSemaforo(int tiempo){
+		contadorEstado += tiempo;
+		/* Si el contador del estado actual llego al limite, cambio de estado. */
+		if(contadorEstado >= (tiempoEstado.get(estado)).intValue()){
+			estado = getProximoEstado(estado);
+		}
 	}
 	
 	/**
+	 * Indica si el semáforo está en verde, para poder avanzar.
+	 * @return true si el estado es Color.VERDE; false en cualquier otro caso.
+	 */
+	public boolean puedoPasar(){
+		return (estado == Color.VERDE);
+	}
+	
+	/**
+	 * Método que decide cuál es el próximo estado del semáforo.
+	 * @param estActual es el estado actual del semáforo
+	 * @return el proximo estado que debe tener.
+	 */
+	public Color getProximoEstado(Color estActual){
+		switch(estActual){
+		case ROJO:
+			return Color.AMARILLO;
+		case AMARILLO:
+			return Color.VERDE;
+		case VERDE:
+			return Color.ROJO;
+		}
+		return Color.ROJO;
+	}
+	
+	/**
+	 * Actualizar los tiempos que dura el ciclo de cada color.
+	 * Actualiza el semáforo con los valores indicados.
+	 * Se actualiza concurrentemente desde el hilo del algoritmo genético.
+	 */
+	synchronized public void setearTiempos(int rojo, int amarillo, int verde){
+		tiempoEstado.put(Color.ROJO, new Integer(rojo));
+		tiempoEstado.put(Color.AMARILLO, new Integer(amarillo));
+		tiempoEstado.put(Color.VERDE, new Integer(verde));
+	}
+
+	/**
+	 * Obtiene el tiempo que dura el ciclo del semaforo en el color especificado.
+	 */
+	public int getTiempo(Color color){
+		return (tiempoEstado.get(color)).intValue();
+	}
+	
+	/*
 	 * Metodos para implementar el algoritmo genetico.
 	 */
 	@Override

@@ -3,15 +3,26 @@ package problema;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
-import core.Evolucion;
-import core.Individuo;
-
 
 public class Controlador {
 
+	static private int TIEMPO_CICLO = 1;
 	/** Funcion principal. */
 	public static void main(String[] args) {
-		int cantIndividuos;
+		
+		Avenida avenida = new Avenida();
+		
+		for(int i=0; i<3600; i++){
+			avenida.cicloAvenida(TIEMPO_CICLO);
+			avenida.toString();
+			try {
+				Thread.sleep(1000 * TIEMPO_CICLO);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		
+/*		int cantIndividuos;
 		int condFin;
 		float datoFin;
 		float porcSeleccion;
@@ -45,7 +56,7 @@ public class Controlador {
 		
 		Individuo resultado = evolucion.getMejorIndividuo();
 		System.out.println("Mejor Individuo encontrado: " + resultado.toString());
-		
+*/		
 		System.exit(0);
 	}
 	
