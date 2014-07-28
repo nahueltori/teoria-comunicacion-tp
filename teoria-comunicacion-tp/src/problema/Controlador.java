@@ -12,11 +12,12 @@ public class Controlador {
 		
 		Avenida avenida = new Avenida();
 		
-		for(int i=0; i<3600; i++){
+		for(int i=0; i<60; i++){
 			avenida.cicloAvenida(TIEMPO_CICLO);
-			avenida.toString();
+			System.out.println("Ciclo N° " + i);
+			System.out.println(avenida.toString());
 			try {
-				Thread.sleep(1000 * TIEMPO_CICLO);
+				Thread.sleep(500 * TIEMPO_CICLO);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

@@ -58,7 +58,8 @@ public class Avenida {
 		crearTraficoAleatoriamente();
 		for(Tramo tramo : listaTramos){
 			/* TODO: linkear con la velocidad de la Onda Verde. */
-			tramo.cicloTrafico(tiempo, 40);
+			tramo.setVelOndaVerde(20);
+			tramo.cicloTrafico(tiempo);
 		}
 	}
 	
@@ -67,7 +68,7 @@ public class Avenida {
 	 */
 	private void crearTraficoAleatoriamente(){
 		Random rand = new Random();
-		for(int i=0; i<rand.nextInt(3); i++){
+		for(int i=0; i<rand.nextInt(5); i++){
 			inicioAv.enviarTrafico(new Auto());
 		}
 	}
@@ -75,7 +76,16 @@ public class Avenida {
 	@Override
 	public String toString(){
 		String avenida = "";
-		
+		Tramo tramo = inicioAv;
+		int i = 1;
+		while(tramo != null){
+			if(tramo.estadoTrafico() > 0){
+				avenida += "Tramo " + i + ":\n" + tramo.toString();
+			}
+			i++;
+			tramo = tramo.getTramoSiguiente();
+		}
 		return avenida;
 	}
+	
 }

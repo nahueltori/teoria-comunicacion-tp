@@ -17,9 +17,9 @@ public class Semaforo extends Individuo {
 		contadorEstado = 0;
 		this.estado = Color.ROJO;
 		tiempoEstado = new Hashtable<Color, Integer>();
-		tiempoEstado.put(Color.ROJO, new Integer(120));
-		tiempoEstado.put(Color.AMARILLO, new Integer(30));
-		tiempoEstado.put(Color.VERDE, new Integer(120));
+		tiempoEstado.put(Color.ROJO, new Integer(30));
+		tiempoEstado.put(Color.AMARILLO, new Integer(5));
+		tiempoEstado.put(Color.VERDE, new Integer(30));
 	}
 	
 	/**
@@ -31,6 +31,7 @@ public class Semaforo extends Individuo {
 		/* Si el contador del estado actual llego al limite, cambio de estado. */
 		if(contadorEstado >= (tiempoEstado.get(estado)).intValue()){
 			estado = getProximoEstado(estado);
+			contadorEstado = 0;
 		}
 	}
 	
@@ -40,6 +41,14 @@ public class Semaforo extends Individuo {
 	 */
 	public boolean puedoPasar(){
 		return (estado == Color.VERDE);
+	}
+
+	/**
+	 * Devuelve el color del estado del semaforo.
+	 * @return
+	 */
+	public Color getColor(){
+		return estado;
 	}
 	
 	/**
@@ -75,6 +84,16 @@ public class Semaforo extends Individuo {
 	 */
 	public int getTiempo(Color color){
 		return (tiempoEstado.get(color)).intValue();
+	}
+
+	@Override
+	public String toString(){
+		String semaforo = "";
+		semaforo += estado.toString() + "\n";
+		semaforo += "Tiempo ROJO: " + tiempoEstado.get(Color.ROJO).toString() + "\n";
+		semaforo += "Tiempo AMARILLO: " + tiempoEstado.get(Color.AMARILLO).toString() + "\n";
+		semaforo += "Tiempo VERDE: " + tiempoEstado.get(Color.VERDE).toString() + "\n";
+		return semaforo;
 	}
 	
 	/*

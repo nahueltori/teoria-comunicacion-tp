@@ -12,9 +12,9 @@ public class Tramo {
       private int longitud;
       
       /**
-       * Porcentaje indicador del estado del trafico en el momento en el estado actual.
-       */ 
-      private float estadoTrafico;
+       * Velocidad recomendada por la Onda Verde.
+       */
+      private int velocidadOndaVerde;
       
       /**
        * Lista que contiene los autos que estan transitando ese momento por el tramo representado.
@@ -35,8 +35,8 @@ public class Tramo {
       public Tramo(int longitud, Semaforo semaforo){
     	  autosTrafico = new ArrayList<Auto>();
           this.longitud = longitud;
-          this.estadoTrafico = 0;
           this.semaforo = semaforo;
+          this.velocidadOndaVerde = 20;
       }
 
       /**
@@ -48,7 +48,7 @@ public class Tramo {
        * @param tiempo El parametro tiempo es la cantidad de segundos transcurridos en el ciclo.
        * @param velocidadEl parametro velocidad está en KM/H, y es la sugerida por la Onda Verde para que transiten los autos.
        */
-      public void cicloTrafico(int tiempo, int velocidad){
+      public void cicloTrafico(int tiempo){
     	  semaforo.cicloSemaforo(tiempo);
     	  
     	  for(Iterator<Auto> i = autosTrafico.iterator(); i.hasNext(); ){
@@ -63,47 +63,72 @@ public class Tramo {
     			  }
     			  /* Si el semaforo detiene el trafico. */
     			  else{
-    				  velocidad = 0;
+    				  auto.setVelocidad(0);
     			  }
 			  }
-			  /* Si aun no llegue al fin de tramo, avanzo los autos 
-			   * y seteo su velocidad recomendada. */
+			  /* Si aun no llegue al fin de tramo, avanzo los autos. */ 
 			  else{
-	    		  auto.setVelocidad(velocidad);
         		  auto.avanzar(tiempo);
     		  }
     	  }
       }
 
       /**
-       * TODO: Metodo que devuelve un porcentaje de cantidad de trafico en el tramo representado.
+       * Metodo que devuelve un estado del trafico en el tramo representado.
+       * Unidades: Autos cada 100  metros.
        */
       public float estadoTrafico(){
-            return estadoTrafico;
+            return autosTrafico.size() * 100 / longitud;
       }
       
       /**
        * Metodo que agrega un auto al tramo de trafico actual.
+       * Reinicia sus datos de posición, y le setea la velocidad recomendada por la Onda Verde.
        */
       public void enviarTrafico(Auto auto){
-    	  auto.reiniciar();
+    	  auto.reiniciar(longitud);
+    	  auto.setVelocidad(velocidadOndaVerde);
     	  autosTrafico.add(auto);
       }
 
+      /**
+       * Setea la velocidad recomendada por la onda verde, para
+       * que sea utilizada por los autos.
+       * @param velocidad
+       */
+      public void setVelOndaVerde(int velocidad){
+    	  velocidadOndaVerde = velocidad;
+      }
+      
       /**
        * Metodo que relaciona el tramo de trafico actual con el siguiente.
        */
       public void relacionarTrafico(Tramo trafico){
             tramoSiguiente = trafico;
       }
-
-  	@Override
-  	public String toString(){
-  		String tramo = "";
-/*  		for(Tramo tramo : listaTramos){
-  			avenida += tramo.toString();
-  		}
-*/  		return tramo;
-  	}
       
+      /**
+       * Devuelve el tramo que sigue al actual.
+       */
+      public Tramo getTramoSiguiente(){
+    	  return tramoSiguiente;
+      }
+
+      @Override
+      public String toString(){
+    	  String tramo = "";
+    	  tramo += "Longitud: " + longitud + "\n";
+    	  tramo += "Autos: " + autosTrafico.size() + "\n";
+    	  tramo += "|" + new String(new char[(longitud/2)-2]) + "|" + "\n";
+    	  for(Auto auto : autosTrafico){
+    		  int pos = auto.getPosicion()/2;
+    		  String strAuto = new String(new char[pos]);
+    		  tramo += strAuto + "A\n";
+    	  }
+    	  tramo += "Estado trafico: " + estadoTrafico() + "\n";
+    	  tramo += "Semaforo: " + semaforo.toString() + "\n";
+    	  return tramo;
+      }
+
+
 }
