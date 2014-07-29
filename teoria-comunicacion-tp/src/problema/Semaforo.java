@@ -11,11 +11,15 @@ public class Semaforo extends Individuo {
 
 	private Color estado;
 	private int contadorEstado;
+	private int retraso;
+	private int retrasoUsado;
 	private Hashtable<Color, Integer> tiempoEstado;
 	
-	public Semaforo(){
+	public Semaforo(int retraso){
 		contadorEstado = 0;
+		retrasoUsado = 0;
 		this.estado = Color.ROJO;
+		this.retraso = retraso;
 		tiempoEstado = new Hashtable<Color, Integer>();
 		tiempoEstado.put(Color.ROJO, new Integer(30));
 		tiempoEstado.put(Color.AMARILLO, new Integer(5));
@@ -27,11 +31,16 @@ public class Semaforo extends Individuo {
 	 * @param tiempo
 	 */
 	synchronized public void cicloSemaforo(int tiempo){
-		contadorEstado += tiempo;
-		/* Si el contador del estado actual llego al limite, cambio de estado. */
-		if(contadorEstado >= (tiempoEstado.get(estado)).intValue()){
-			estado = getProximoEstado(estado);
-			contadorEstado = 0;
+		if(retrasoUsado < retraso){
+			retrasoUsado += tiempo;
+		}
+		else{
+			contadorEstado += tiempo;
+			/* Si el contador del estado actual llego al limite, cambio de estado. */
+			if(contadorEstado >= (tiempoEstado.get(estado)).intValue()){
+				estado = getProximoEstado(estado);
+				contadorEstado = 0;
+			}
 		}
 	}
 	
@@ -73,7 +82,9 @@ public class Semaforo extends Individuo {
 	 * Actualiza el semáforo con los valores indicados.
 	 * Se actualiza concurrentemente desde el hilo del algoritmo genético.
 	 */
-	synchronized public void setearTiempos(int rojo, int amarillo, int verde){
+	public synchronized void setearTiempos(int retraso, int rojo, int amarillo, int verde){
+		this.retraso = retraso;
+		retrasoUsado = 0;
 		tiempoEstado.put(Color.ROJO, new Integer(rojo));
 		tiempoEstado.put(Color.AMARILLO, new Integer(amarillo));
 		tiempoEstado.put(Color.VERDE, new Integer(verde));
@@ -82,7 +93,7 @@ public class Semaforo extends Individuo {
 	/**
 	 * Obtiene el tiempo que dura el ciclo del semaforo en el color especificado.
 	 */
-	public int getTiempo(Color color){
+	public synchronized int getTiempo(Color color){
 		return (tiempoEstado.get(color)).intValue();
 	}
 
@@ -95,6 +106,8 @@ public class Semaforo extends Individuo {
 		semaforo += "Tiempo VERDE: " + tiempoEstado.get(Color.VERDE).toString() + "\n";
 		return semaforo;
 	}
+
+	
 	
 	/*
 	 * Metodos para implementar el algoritmo genetico.
