@@ -17,20 +17,26 @@ import problema.Semaforo;
 
 @SuppressWarnings("serial")
 public class Dibujante extends JPanel {
-//	int x = 0;
+
 	JFrame frame = null;
 	Avenida avenida;
-	private static int YTRAMO = 100;
-	private static int ALTOTRAMO = 30;
-	private static int ALTOSEMAFORO = 10;
-	private static int ANCHOSEMAFORO = 10;
-	private static int DIST_ENTRE_TRAMOS = 15;
-	private static int YAUTO = YTRAMO + (ALTOTRAMO /2);
+	private static int ANCHOVENTANA  = 1500;
+	private static int ALTOVENTANA   =  200;
+	private static int ANCHOAUTO     =   10;
+	private static int ALTOAUTO      =   10;
+	private static int ANCHOSEMAFORO =   15;
+	private static int ALTOSEMAFORO  =   15;
+	private static int ALTOTRAMO     =   30;
+	private static int ANCHOSENDA    =    2;
+	
+	private static int YTRAMO = (ALTOVENTANA/2)-(ALTOTRAMO);
+	private static int YAUTO = YTRAMO + (ALTOTRAMO /3);
+	private static int YSEMAFORO = YTRAMO - ALTOSEMAFORO;
 	
     public void setAvenida (Avenida a){
-	    JFrame frame = new JFrame("Mini Tennis");
+	    JFrame frame = new JFrame("Semaforos");
     	frame.add(this);
-    	frame.setSize(1000, 200)	;
+    	frame.setSize(ANCHOVENTANA,ALTOVENTANA)	;
     	frame.setVisible(true);
     	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     	this.frame = frame;
@@ -54,17 +60,23 @@ public class Dibujante extends JPanel {
 			
 		// Dibujo del tramo
 			g2d.setColor(java.awt.Color.GRAY);
-			g2d.fillRect(xTramo, YTRAMO, tramo.getLongitud(), ALTOTRAMO);
-			
+			g2d.fillRect(xTramo, YTRAMO, tramo.getLongitud()+ANCHOAUTO, ALTOTRAMO);
+		// Dibujo senda peatonal
+			g2d.setColor(java.awt.Color.WHITE);
+			g2d.fillRect(xTramo, YTRAMO, ANCHOSENDA, ALTOTRAMO);
+			g2d.fillRect(xTramo + (ANCHOSENDA*2), YTRAMO, ANCHOSENDA, ALTOTRAMO);
+			g2d.fillRect(xTramo + (ANCHOSENDA*4), YTRAMO, ANCHOSENDA, ALTOTRAMO);			
+			g2d.fillRect(xTramo + (ANCHOSENDA*6), YTRAMO, ANCHOSENDA, ALTOTRAMO);			
+		
 		// Dibujo todos los autos del tramo
 			for(Iterator<Auto> a = listaAutos.iterator(); a.hasNext(); ){
 				Auto auto = a.next();
 				int xAuto = auto.getPosicion() + xTramo;
 				g2d.setColor(java.awt.Color.BLUE);
-				g2d.fillOval(xAuto, YAUTO, 10, 10);
+				g2d.fillOval(xAuto, YAUTO, ANCHOAUTO, ALTOAUTO);
 			}
 		// Termina el tramo y dibujo el semaforo
-			int xSemaforo = xTramo + tramo.getLongitud();
+			int xSemaforo = xTramo + tramo.getLongitud()+ANCHOAUTO;
 			Semaforo s = tramo.getSemaforo();
 			problema.Semaforo.Color estadoSemaforo = s.getColor();
 			if ( estadoSemaforo == problema.Semaforo.Color.ROJO ) 
@@ -73,10 +85,10 @@ public class Dibujante extends JPanel {
 				g2d.setColor(Color.YELLOW);
 				else 
 					g2d.setColor(Color.GREEN);
-			g2d.fillOval(xSemaforo, YTRAMO, ANCHOSEMAFORO, ALTOSEMAFORO);
+			g2d.fillOval(xSemaforo, YSEMAFORO, ANCHOSEMAFORO, ALTOSEMAFORO);
 			
 		// Me posiciono en el proximo tramo	
-			xTramo = xTramo + tramo.getLongitud() + DIST_ENTRE_TRAMOS;
+			xTramo = xTramo + tramo.getLongitud()+ANCHOAUTO;
 		}
 	}	
 
