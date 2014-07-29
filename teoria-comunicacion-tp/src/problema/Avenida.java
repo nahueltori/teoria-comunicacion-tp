@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
-import configuracion.Constante;
-
 public class Avenida {
 
 	private static int MANANA = 120;
