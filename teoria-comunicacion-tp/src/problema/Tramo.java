@@ -3,7 +3,6 @@ package problema;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
 public class Tramo {
 
       /**
@@ -130,5 +129,13 @@ public class Tramo {
     	  return tramo;
       }
 
-
+      public List<Auto> getAutos(){
+    	  return this.autosTrafico;
+      }
+      public int getLongitud(){
+    	  return this.longitud;
+      }
+      public Semaforo getSemaforo(){
+    	  return this.semaforo;
+      }
 }

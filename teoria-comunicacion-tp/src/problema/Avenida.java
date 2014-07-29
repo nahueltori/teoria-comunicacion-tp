@@ -13,7 +13,7 @@ public class Avenida {
 	
 	private List<Semaforo> listaSemaforos;
 	
-	private List<Tramo> listaTramos;
+	public List<Tramo> listaTramos;
 	
 	private Tramo inicioAv;
 
@@ -87,5 +87,8 @@ public class Avenida {
 		}
 		return avenida;
 	}
-	
+	public List<Tramo> getTramos(){
+		return this.listaTramos;
+		
+	}
 }

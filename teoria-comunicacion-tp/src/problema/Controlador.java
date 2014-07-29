@@ -2,7 +2,7 @@ package problema;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-
+import vista.Dibujante;
 
 public class Controlador {
 
@@ -11,11 +11,14 @@ public class Controlador {
 	public static void main(String[] args) {
 		
 		Avenida avenida = new Avenida();
+		Dibujante dibu = new Dibujante();
+		dibu.setAvenida(avenida);
 		
 		for(int i=0; i<60; i++){
 			avenida.cicloAvenida(TIEMPO_CICLO);
 			System.out.println("Ciclo N° " + i);
 			System.out.println(avenida.toString());
+			dibu.update();
 			try {
 				Thread.sleep(500 * TIEMPO_CICLO);
 			} catch (InterruptedException e) {
