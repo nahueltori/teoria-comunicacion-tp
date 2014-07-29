@@ -16,6 +16,8 @@ public class Avenida {
 	public List<Tramo> listaTramos;
 	
 	private Tramo inicioAv;
+	
+	private int hora;
 
 	public Avenida(){
 		Scanner parametros;
@@ -25,11 +27,12 @@ public class Avenida {
 			parametros = new Scanner(new BufferedReader(new FileReader("data/config.txt")));
 			multiplicador = parametros.nextInt();
 			Tramo tramoAnt = null;
+			int i = 0;
 			while(parametros.hasNext()){
 				int longitud = parametros.nextInt();
 				
 				//Creo los semáforos para cada tramo de tráfico
-				Semaforo semaforo = new Semaforo();
+				Semaforo semaforo = new Semaforo(i);
 				listaSemaforos.add(semaforo);
 				
 				//Creo los tramos de Tráfico y los relaciono entre sí
@@ -41,6 +44,7 @@ public class Avenida {
 					inicioAv = tramo;
 				}
 				tramoAnt = tramo;
+				i++;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -55,7 +59,7 @@ public class Avenida {
 	 */
 	public void cicloAvenida(int tiempo){
 		tiempo *= multiplicador;
-		crearTraficoAleatoriamente();
+		crearTraficoAleatoriamente(tiempo);
 		for(Tramo tramo : listaTramos){
 			/* TODO: linkear con la velocidad de la Onda Verde. */
 			tramo.setVelOndaVerde(20);
@@ -64,11 +68,30 @@ public class Avenida {
 	}
 	
 	/**
-	 * TODO: Metodo que se encarga de generar aleatoriamente trafico, dependiendo del horario del dia.
+	 * Metodo que se encarga de generar aleatoriamente trafico, dependiendo del horario del dia.
+	 * TODO: Pasar Hardcode a parametros.
 	 */
-	private void crearTraficoAleatoriamente(){
+	private void crearTraficoAleatoriamente(int tiempo){
 		Random rand = new Random();
-		for(int i=0; i<rand.nextInt(5); i++){
+		int varAleatCantidad = 0;
+		hora += tiempo;
+		final int MANANA = 120;
+		final int TARDE = 240;
+		final int NOCHE = 360;
+		if(hora < MANANA){
+			varAleatCantidad = rand.nextInt(5); 
+		}
+		else{
+			if(hora < TARDE){
+				varAleatCantidad = rand.nextInt(1);
+			}
+			else{
+				if(hora < NOCHE){
+					varAleatCantidad = rand.nextInt(6);
+				}
+			}
+		}
+		for(int i=0; i<varAleatCantidad; i++){
 			inicioAv.enviarTrafico(new Auto());
 		}
 	}
