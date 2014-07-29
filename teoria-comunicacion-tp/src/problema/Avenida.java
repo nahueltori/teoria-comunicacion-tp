@@ -7,8 +7,14 @@ import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
+import configuracion.Constante;
+
 public class Avenida {
 
+	private static int MANANA = 120;
+	private static int TARDE = 240;
+	private static int NOCHE = 360;
+	
 	private int multiplicador;
 	
 	private List<Semaforo> listaSemaforos;
@@ -31,11 +37,11 @@ public class Avenida {
 			while(parametros.hasNext()){
 				int longitud = parametros.nextInt();
 				
-				//Creo los semáforos para cada tramo de tráfico
+				//Creo los semï¿½foros para cada tramo de trï¿½fico
 				Semaforo semaforo = new Semaforo(i);
 				listaSemaforos.add(semaforo);
 				
-				//Creo los tramos de Tráfico y los relaciono entre sí
+				//Creo los tramos de Trï¿½fico y los relaciono entre sï¿½
 				Tramo tramo = new Tramo(longitud, semaforo);
 				listaTramos.add(tramo);
 				if(tramoAnt != null){
@@ -69,15 +75,11 @@ public class Avenida {
 	
 	/**
 	 * Metodo que se encarga de generar aleatoriamente trafico, dependiendo del horario del dia.
-	 * TODO: Pasar Hardcode a parametros.
 	 */
 	private void crearTraficoAleatoriamente(int tiempo){
 		Random rand = new Random();
 		int varAleatCantidad = 0;
 		hora += tiempo;
-		final int MANANA = 120;
-		final int TARDE = 240;
-		final int NOCHE = 360;
 		if(hora < MANANA){
 			varAleatCantidad = rand.nextInt(5); 
 		}
