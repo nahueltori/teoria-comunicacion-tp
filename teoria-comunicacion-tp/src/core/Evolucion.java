@@ -19,9 +19,9 @@ public class Evolucion{
   Reproduccion reproduccion;
   Mutacion mutacion;
 
-  public Evolucion(int tamanioPob, float porcSeleccion,
+  public Evolucion(List<Individuo> individuos, float porcSeleccion,
                    float porcMutacion, int condFin, float finDato){
-    poblacion = new Poblacion(tamanioPob);
+    poblacion = new Poblacion(individuos);
     poblacion.mostrarDatos();
     switch(condFin){
     case CANT_GENER:

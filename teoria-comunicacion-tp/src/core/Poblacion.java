@@ -1,5 +1,4 @@
 package core;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -15,9 +14,9 @@ public class Poblacion{
   float aptitudPob;
   float sumaAptitudes;
 
-  public Poblacion(int tam){
-    tamanioPob = 0;
-    individuos = new ArrayList<Individuo>();
+  public Poblacion(List<Individuo> individuos){
+    this.individuos = individuos;
+    tamanioPob = individuos.size();
     nroGeneracion = 0;
     tasaCrecimiento = 0;
   }
