@@ -3,13 +3,13 @@ package core;
 
 public abstract class Individuo{
 
-  protected float aptitud;
+  protected double aptitud;
 
   public Individuo(){
-    evaluarAptitud();
+//    evaluarAptitud();
   }
 
-  public float getAptitud(){
+  public double getAptitud(){
     return aptitud;
   }
 

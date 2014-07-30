@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
+import core.Individuo;
+
 public class Avenida {
 
 	private static int MANANA = 120;
@@ -15,7 +17,7 @@ public class Avenida {
 	
 	private int multiplicador;
 	
-	private List<Semaforo> listaSemaforos;
+	private List<Individuo> listaSemaforos;
 	
 	public List<Tramo> listaTramos;
 	
@@ -25,7 +27,7 @@ public class Avenida {
 
 	public Avenida(){
 		Scanner parametros;
-		listaSemaforos = new ArrayList<Semaforo>();
+		listaSemaforos = new ArrayList<Individuo>();
 		listaTramos = new ArrayList<Tramo>();
 		try {
 			parametros = new Scanner(new BufferedReader(new FileReader("data/config.txt")));
@@ -35,13 +37,17 @@ public class Avenida {
 			while(parametros.hasNext()){
 				int longitud = parametros.nextInt();
 				
-				//Creo los sem�foros para cada tramo de tr�fico
-				Semaforo semaforo = new Semaforo(i);
-				listaSemaforos.add(semaforo);
-				
-				//Creo los tramos de Tr�fico y los relaciono entre s�
-				Tramo tramo = new Tramo(longitud, semaforo);
+				//Creo los tramos de Trafico y los relaciono entre si
+				Tramo tramo = new Tramo(longitud);
 				listaTramos.add(tramo);
+
+				//Creo los semaforos para cada tramo de trafico
+				Semaforo semaforo = new Semaforo(tramo, i);
+				//Asigno una velocidad inicial para la onda verde
+				semaforo.setVelOndaVerde(20);
+				listaSemaforos.add(semaforo);
+				tramo.setSemaforo(semaforo);
+				
 				if(tramoAnt != null){
 					tramoAnt.relacionarTrafico(tramo);
 				}else{
@@ -59,7 +65,7 @@ public class Avenida {
 	/**
 	 * @return Se obtiene la lista de semaforos de la avenida.
 	 */
-	public List<Semaforo> getListaSemaforos(){
+	public List<Individuo> getListaIndividuos(){
 		return listaSemaforos;
 	}
 	
@@ -72,8 +78,6 @@ public class Avenida {
 		tiempo *= multiplicador;
 		crearTraficoAleatoriamente(tiempo);
 		for(Tramo tramo : listaTramos){
-			/* TODO: linkear con la velocidad de la Onda Verde. */
-			tramo.setVelOndaVerde(20);
 			tramo.cicloTrafico(tiempo);
 		}
 	}

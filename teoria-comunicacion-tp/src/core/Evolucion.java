@@ -3,13 +3,9 @@ import java.util.Iterator;
 import java.util.List;
 
 
-public class Evolucion{
+public class Evolucion extends Thread{
   
-	public static final int CANT_GENER = 1;
-	
-	public static final int MIN_APTITUD = 2;
-	
-	public static final int TASA_MIN = 3;
+	public static final int APTITUD_MINIMA = 90;
 	
   Poblacion poblacion;
   
@@ -19,23 +15,12 @@ public class Evolucion{
   Reproduccion reproduccion;
   Mutacion mutacion;
 
-  public Evolucion(List<Individuo> individuos, float porcSeleccion,
-                   float porcMutacion, int condFin, float finDato){
+  public Evolucion(List<Individuo> individuos, float porcMutacion){
     poblacion = new Poblacion(individuos);
-    poblacion.mostrarDatos();
-    switch(condFin){
-    case CANT_GENER:
-    	criterio = new CriterioFinCantGeneraciones(poblacion,(int)finDato);
-    	break;
-    case MIN_APTITUD:
-    	criterio = new CriterioFinMinAptitud(poblacion,finDato);
-    	break;
-    case TASA_MIN:
-    	criterio = new CriterioFinTasaMinima(poblacion,finDato);
-    	break;
-    }
+//    poblacion.mostrarDatos();
+   	criterio = new CriterioFinMinAptitud(poblacion, APTITUD_MINIMA);
     
-    seleccion = new Seleccion(poblacion, porcSeleccion);
+    seleccion = new Seleccion(poblacion);
     reproduccion = new Reproduccion(poblacion);
     mutacion = new Mutacion(poblacion, porcMutacion);
   }

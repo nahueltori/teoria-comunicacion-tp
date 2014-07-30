@@ -9,21 +9,48 @@ public class Semaforo extends Individuo {
 		ROJO, AMARILLO, VERDE
 	}
 
+	/**
+	 * Variable para que el retraso sea un poco menor que el tiempo justo
+	 */
+	private final int AJUSTE_RETRASO = 2;
+	
+	private final double PESO_APTITUD_RETRASO = 0.3; 
+	
+	/**
+	 * Color del semaforo.
+	 */
 	private Color estado;
+	
 	private int contadorEstado;
 	private int retraso;
 	private int retrasoUsado;
+	
+	private int velOndaVerde;
+	private Tramo tramoAct;
 	private Hashtable<Color, Integer> tiempoEstado;
 	
-	public Semaforo(int retraso){
+	public Semaforo(Tramo tramo, int retraso){
 		contadorEstado = 0;
 		retrasoUsado = 0;
-		this.estado = Color.ROJO;
 		this.retraso = retraso;
+		this.estado = Color.ROJO;
+		tramoAct = tramo;
 		tiempoEstado = new Hashtable<Color, Integer>();
-		tiempoEstado.put(Color.ROJO, new Integer(20));
+		tiempoEstado.put(Color.ROJO, new Integer(15));
 		tiempoEstado.put(Color.AMARILLO, new Integer(2));
-		tiempoEstado.put(Color.VERDE, new Integer(20));
+		tiempoEstado.put(Color.VERDE, new Integer(30));
+	}
+
+	public int getVelOndaVerde(){
+		return velOndaVerde;
+	}
+	
+	public void setVelOndaVerde(int vel){
+		velOndaVerde = vel;
+	}
+	
+	private void setRetraso(int ret){
+		this.retraso = ret;
 	}
 	
 	/**
@@ -68,11 +95,11 @@ public class Semaforo extends Individuo {
 	public Color getProximoEstado(Color estActual){
 		switch(estActual){
 		case ROJO:
-			return Color.AMARILLO;
-		case AMARILLO:
 			return Color.VERDE;
-		case VERDE:
+		case AMARILLO:
 			return Color.ROJO;
+		case VERDE:
+			return Color.AMARILLO;
 		}
 		return Color.ROJO;
 	}
@@ -106,16 +133,25 @@ public class Semaforo extends Individuo {
 		semaforo += "Tiempo VERDE: " + tiempoEstado.get(Color.VERDE).toString() + "\n";
 		return semaforo;
 	}
-
 	
 	
-	/*
-	 * Metodos para implementar el algoritmo genetico.
+	/**
+	 * Se apunta a lograr aproximadamente un 70% de ocupacion permanente de la calle,
+	 * de forma de optimizar el transito.
+	 * Se evalua:
+	 * - El retraso
+	 * - Los tiempos del rojo y verde
 	 */
 	@Override
 	public void evaluarAptitud() {
-		// TODO Auto-generated method stub
-
+		aptitud = 0;
+		
+		//El retraso ideal es la longitud del tramo dividido los metros por segundo que puede 
+		//avanzar un auto, con unos segundos de ajuste. Unidades: segundos.
+		double retrasoIdeal = ( tramoAct.getLongitud() / (velOndaVerde * 1000 / 3600) ) - AJUSTE_RETRASO;
+		aptitud += (retrasoIdeal / (double) retraso) * PESO_APTITUD_RETRASO;
+		
+		
 	}
 
 	@Override

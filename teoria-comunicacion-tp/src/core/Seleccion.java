@@ -9,18 +9,14 @@ import java.util.TreeMap;
 public class Seleccion{
   
   Poblacion poblacion;
-  float porcentaje;
   int cantASeleccionar;
   List<Individuo> indivSeleccionados;
 
-  public Seleccion(Poblacion pob, float porc){
+  public Seleccion(Poblacion pob){
 	poblacion = pob;
-    porcentaje = porc;
-    int cantIndividuos = poblacion.getListaIndividuos().size();
-    cantASeleccionar = Math.round(cantIndividuos * porcentaje / 100);
-    /** Divido por 2, ya que aplicar� dos m�todos de selecci�n, por lo que cada
-        uno seleccionar� la mitad de lo necesario. */
-    cantASeleccionar = cantASeleccionar / 2;
+    /* Divido por 2, ya que aplico dos metodos de seleccion, por lo que cada
+    uno selecciona la mitad de lo necesario. */
+    cantASeleccionar = poblacion.getListaIndividuos().size() / 2;
   }
 
   /**

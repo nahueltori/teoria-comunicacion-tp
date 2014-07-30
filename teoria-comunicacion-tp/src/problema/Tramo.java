@@ -22,11 +22,6 @@ public class Tramo {
       private static final int MAX_DENS_AUTOS = 10;
       
       /**
-       * Velocidad recomendada por la Onda Verde.
-       */
-      private int velocidadOndaVerde;
-      
-      /**
        * Lista que contiene los autos que estan transitando ese momento por el tramo representado.
        */ 
       private List<Auto> autosTrafico;
@@ -42,13 +37,15 @@ public class Tramo {
        */
       private Semaforo semaforo;
       
-      public Tramo(int longitud, Semaforo semaforo){
+      public Tramo(int longitud){
     	  autosTrafico = new ArrayList<Auto>();
           this.longitud = longitud;
-          this.semaforo = semaforo;
-          this.velocidadOndaVerde = 20;
       }
 
+      public void setSemaforo(Semaforo sem){
+    	  this.semaforo = sem;
+      }
+      
       /**
        * Metodo que realiza un ciclo en el semaforo y en el tramo. Esto significa que avanza los autos el tiempo dado.
        * Cada auto avanza su posicion en metros segun la velocidad que lleva y el tiempo transcurrido.
@@ -97,7 +94,7 @@ public class Tramo {
        */
       public void recibirTrafico(Auto auto){
     	  auto.reiniciar(longitud);
-    	  auto.setVelocidad(velocidadOndaVerde);
+    	  auto.setVelocidad(semaforo.getVelOndaVerde());
     	  autosTrafico.add(auto);
       }
 
@@ -119,15 +116,6 @@ public class Tramo {
     	  
       }
 
-      /**
-       * Setea la velocidad recomendada por la onda verde, para
-       * que sea utilizada por los autos.
-       * @param velocidad
-       */
-      public void setVelOndaVerde(int velocidad){
-    	  velocidadOndaVerde = velocidad;
-      }
-      
       /**
        * Metodo que relaciona el tramo de trafico actual con el siguiente.
        */
