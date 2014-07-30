@@ -14,11 +14,11 @@ public class Controlador {
 		Dibujante dibu = new Dibujante();
 		dibu.setAvenida(avenida);
 		
-		for(int i=0; i<60; i++){
+		for(int i=0; i<360; i++){
 			avenida.cicloAvenida(TIEMPO_CICLO);
 			System.out.println("Ciclo N° " + i);
 			System.out.println(avenida.toString());
-			dibu.update();
+			dibu.update(i);
 			try {
 				Thread.sleep(500 * TIEMPO_CICLO);
 			} catch (InterruptedException e) {

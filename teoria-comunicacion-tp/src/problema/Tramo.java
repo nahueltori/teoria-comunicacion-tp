@@ -4,11 +4,22 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 public class Tramo {
-
+	
+	
       /**
        * Largo del tramo representado.
        */ 
       private int longitud;
+      
+      /**
+       * Maximo porcentaje posible.
+       */
+      public static final int PORC_TOTAL = 100;
+      
+      /**
+       * Cantidad maxima de autos cada 100 metros.
+       */
+      private static final int MAX_DENS_AUTOS = 10;
       
       /**
        * Velocidad recomendada por la Onda Verde.
@@ -53,12 +64,11 @@ public class Tramo {
     	  for(Iterator<Auto> i = autosTrafico.iterator(); i.hasNext(); ){
     		  Auto auto = i.next();
     		  
-        	  /* Evaluo si el auto llegó al final del tramo, si el semaforo permite pasar,
-        	   * lo paso al siguiente tramo. */
+        	  /* Evaluo si el auto llegó al final del tramo, si el semaforo permite pasar y 
+        	   * hay lugar en el siguiente tramo, lo paso al siguiente. */
     		  if(auto.getPosicion() >= longitud){
     			  if(semaforo.puedoPasar()){
-    				  i.remove();
-    				  tramoSiguiente.enviarTrafico(auto);
+    				  enviarTrafico(auto, i);
     			  }
     			  /* Si el semaforo detiene el trafico. */
     			  else{
@@ -74,20 +84,39 @@ public class Tramo {
 
       /**
        * Metodo que devuelve un estado del trafico en el tramo representado.
-       * Unidades: Autos cada 100  metros.
+       * Unidades: Porcentaje de ocupacion del tramo.
        */
-      public float estadoTrafico(){
-            return autosTrafico.size() * 100 / longitud;
+      public int estadoTrafico(){
+    	  int densidadActual = autosTrafico.size() * 100 / longitud;
+    	  return densidadActual * 100 / MAX_DENS_AUTOS;
       }
       
       /**
        * Metodo que agrega un auto al tramo de trafico actual.
        * Reinicia sus datos de posición, y le setea la velocidad recomendada por la Onda Verde.
        */
-      public void enviarTrafico(Auto auto){
+      public void recibirTrafico(Auto auto){
     	  auto.reiniciar(longitud);
     	  auto.setVelocidad(velocidadOndaVerde);
     	  autosTrafico.add(auto);
+      }
+
+      /**
+       * Metodo que envia un auto al tramo de trafico siguiente.
+       * Recibe el Auto a enviar, y el iterador necesario para borrarlo de la lista del tramo actual.
+       */
+      private void enviarTrafico(Auto auto, Iterator<Auto> i){
+    	  if(tramoSiguiente != null){
+    		  if(tramoSiguiente.estadoTrafico() < PORC_TOTAL){
+				  i.remove();
+				  tramoSiguiente.recibirTrafico(auto);
+    		  }
+    	  }
+    	  // Si no hay un tramo siguiente, se llego al final de la avenida, por lo que se elimina el auto. 
+    	  else{
+    		  i.remove();
+    	  }
+    	  
       }
 
       /**
@@ -116,16 +145,16 @@ public class Tramo {
       @Override
       public String toString(){
     	  String tramo = "";
-    	  tramo += "Longitud: " + longitud + "\n";
-    	  tramo += "Autos: " + autosTrafico.size() + "\n";
-    	  tramo += "|" + new String(new char[(longitud/2)-2]) + "|" + "\n";
-    	  for(Auto auto : autosTrafico){
-    		  int pos = auto.getPosicion()/2;
-    		  String strAuto = new String(new char[pos]);
-    		  tramo += strAuto + "A\n";
-    	  }
-    	  tramo += "Estado trafico: " + estadoTrafico() + "\n";
-    	  tramo += "Semaforo: " + semaforo.toString() + "\n";
+//    	  tramo += "Longitud: " + longitud + "\n";
+//    	  tramo += "Autos: " + autosTrafico.size() + "\n";
+//    	  tramo += "|" + new String(new char[(longitud/2)-2]) + "|" + "\n";
+//    	  for(Auto auto : autosTrafico){
+//    		  int pos = auto.getPosicion()/2;
+//    		  String strAuto = new String(new char[pos]);
+//    		  tramo += strAuto + "A\n";
+//    	  }
+    	  tramo += "Estado: " + estadoTrafico();
+//    	  tramo += "Semaforo: " + semaforo.toString() + "\n";
     	  return tramo;
       }
 

@@ -43,7 +43,7 @@ public class Dibujante extends JPanel {
     	this.avenida = a;
     }
 
-	public void update() {
+	public void update(int ciclo) {
 		this.repaint();
 	}
 

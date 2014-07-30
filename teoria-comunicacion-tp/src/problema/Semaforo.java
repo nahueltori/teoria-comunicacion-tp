@@ -21,9 +21,9 @@ public class Semaforo extends Individuo {
 		this.estado = Color.ROJO;
 		this.retraso = retraso;
 		tiempoEstado = new Hashtable<Color, Integer>();
-		tiempoEstado.put(Color.ROJO, new Integer(30));
-		tiempoEstado.put(Color.AMARILLO, new Integer(5));
-		tiempoEstado.put(Color.VERDE, new Integer(30));
+		tiempoEstado.put(Color.ROJO, new Integer(20));
+		tiempoEstado.put(Color.AMARILLO, new Integer(2));
+		tiempoEstado.put(Color.VERDE, new Integer(20));
 	}
 	
 	/**

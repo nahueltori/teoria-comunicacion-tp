@@ -57,6 +57,13 @@ public class Avenida {
 	}
 	
 	/**
+	 * @return Se obtiene la lista de semaforos de la avenida.
+	 */
+	public List<Semaforo> getListaSemaforos(){
+		return listaSemaforos;
+	}
+	
+	/**
 	 * Ciclo de tiempo para la avenida, en donde se actualizan los estados de todos sus
 	 * elementos. 
 	 * @param tiempo Recibe como parametro el tiempo transcurrido desde el ultimo ciclo.
@@ -79,20 +86,22 @@ public class Avenida {
 		int varAleatCantidad = 0;
 		hora += tiempo;
 		if(hora < MANANA){
-			varAleatCantidad = rand.nextInt(5); 
+			varAleatCantidad = rand.nextInt(6); 
 		}
 		else{
 			if(hora < TARDE){
-				varAleatCantidad = rand.nextInt(1);
+				varAleatCantidad = rand.nextInt(2);
 			}
 			else{
 				if(hora < NOCHE){
-					varAleatCantidad = rand.nextInt(6);
+					varAleatCantidad = rand.nextInt(4);
 				}
 			}
 		}
 		for(int i=0; i<varAleatCantidad; i++){
-			inicioAv.enviarTrafico(new Auto());
+			if(inicioAv.estadoTrafico() < Tramo.PORC_TOTAL){
+				inicioAv.recibirTrafico(new Auto());
+			}
 		}
 	}
 	
@@ -102,12 +111,17 @@ public class Avenida {
 		Tramo tramo = inicioAv;
 		int i = 1;
 		while(tramo != null){
-			if(tramo.estadoTrafico() > 0){
-				avenida += "Tramo " + i + ":\n" + tramo.toString();
-			}
+			avenida += "Tramo " + i + "      | ";
 			i++;
 			tramo = tramo.getTramoSiguiente();
 		}
+		avenida += "\n";
+		tramo = inicioAv;
+		while(tramo != null){
+			avenida += tramo.toString() + "   | ";
+			tramo = tramo.getTramoSiguiente();
+		}
+		avenida += "\n";
 		return avenida;
 	}
 	public List<Tramo> getTramos(){
