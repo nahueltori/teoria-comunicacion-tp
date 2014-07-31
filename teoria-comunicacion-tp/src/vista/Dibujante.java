@@ -1,6 +1,8 @@
 package vista;
 
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -34,6 +36,8 @@ public class Dibujante extends JPanel {
 	private static int YAUTO = YTRAMO + (ALTOTRAMO /3);
 	private static int YSEMAFORO = YTRAMO - ALTOSEMAFORO;
 
+	private static Font serifFont = new Font("Serif", Font.PLAIN, 12);
+	
 	public void setAvenida (Avenida a){
 	    JFrame frame = new JFrame("Semaforos");
     	frame.add(this);
@@ -62,6 +66,14 @@ public class Dibujante extends JPanel {
 		// Dibujo del tramo
 			g2d.setColor(java.awt.Color.GRAY);
 			g2d.fillRect(xTramo, YTRAMO, tramo.getLongitud()+ANCHOAUTO, ALTOTRAMO);
+
+		// Escribo el estado del tramo
+			int estadoTramo = tramo.estadoTrafico();
+			g2d.setFont(serifFont);
+//			FontMetrics fm = g.getFontMetrics();
+		    g.drawString("%"+String.valueOf(estadoTramo), xTramo, YTRAMO+(ALTOTRAMO*2));
+			
+			
 		// Dibujo senda peatonal
 			g2d.setColor(java.awt.Color.WHITE);
 			g2d.fillRect(xTramo, YTRAMO, ANCHOSENDA, ALTOTRAMO);
