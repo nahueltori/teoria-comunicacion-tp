@@ -2,7 +2,6 @@ package vista;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -22,6 +21,7 @@ public class Dibujante extends JPanel {
 
 	JFrame frame = null;
 	Avenida avenida;
+	int ciclo = 0;
 	
 	private static int ANCHOVENTANA  = 1500;
 	private static int ALTOVENTANA   =  200;
@@ -58,6 +58,11 @@ public class Dibujante extends JPanel {
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
 		int xTramo = 0;
+		// Imprimo el numero de Ciclo
+		g2d.setFont(serifFont);
+	    g.drawString("Numero de ciclo: "+String.valueOf(ciclo), 15, 15);
+		ciclo++;
+		
 		List<Tramo> listaTramos = avenida.getTramos();
 		for(Iterator<Tramo> t = listaTramos.iterator(); t.hasNext(); ){
 			Tramo tramo = t.next();
@@ -70,10 +75,8 @@ public class Dibujante extends JPanel {
 		// Escribo el estado del tramo
 			int estadoTramo = tramo.estadoTrafico();
 			g2d.setFont(serifFont);
-//			FontMetrics fm = g.getFontMetrics();
 		    g.drawString("%"+String.valueOf(estadoTramo), xTramo, YTRAMO+(ALTOTRAMO*2));
-			
-			
+				
 		// Dibujo senda peatonal
 			g2d.setColor(java.awt.Color.WHITE);
 			g2d.fillRect(xTramo, YTRAMO, ANCHOSENDA, ALTOTRAMO);
