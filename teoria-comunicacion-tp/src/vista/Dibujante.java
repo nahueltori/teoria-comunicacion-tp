@@ -96,7 +96,7 @@ public class Dibujante extends JPanel {
 					case 3: g2d.setColor(java.awt.Color.MAGENTA); break;
 					case 4: g2d.setColor(java.awt.Color.ORANGE); break;
 					case 5: g2d.setColor(java.awt.Color.PINK); break;
-					case 6: g2d.setColor(java.awt.Color.GRAY); break;
+					case 6: g2d.setColor(java.awt.Color.GREEN); break;
 				}	
 				g2d.fillOval(xAuto, YAUTO, ANCHOAUTO, ALTOAUTO);
 				if (aux == 6) aux=0;

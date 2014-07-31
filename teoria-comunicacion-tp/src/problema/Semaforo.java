@@ -13,7 +13,11 @@ public class Semaforo extends Individuo {
 	 * Variable para que el retraso sea un poco menor que el tiempo justo
 	 */
 	private final int AJUSTE_RETRASO = 2;
-	
+
+	private final int TIEMPO_ROJO_PREDET = 15;
+	private final int TIEMPO_AMARILLO_PREDET = 2;
+	private final int TIEMPO_VERDE_PREDET = 30;
+		
 	private final double PESO_APTITUD_RETRASO = 0.3; 
 	
 	/**
@@ -27,30 +31,53 @@ public class Semaforo extends Individuo {
 	
 	private int velOndaVerde;
 	private Tramo tramoAct;
+	private Avenida avenida;
 	private Hashtable<Color, Integer> tiempoEstado;
 	
-	public Semaforo(Tramo tramo, int retraso){
+	/**
+	 * Constructor utilizado para el modelo a simular.
+	 * @param avenida
+	 * @param tramo
+	 */
+	public Semaforo(Avenida avenida, Tramo tramo){
 		contadorEstado = 0;
 		retrasoUsado = 0;
-		this.retraso = retraso;
+		this.avenida = avenida;
 		this.estado = Color.ROJO;
 		tramoAct = tramo;
 		tiempoEstado = new Hashtable<Color, Integer>();
-		tiempoEstado.put(Color.ROJO, new Integer(15));
-		tiempoEstado.put(Color.AMARILLO, new Integer(2));
-		tiempoEstado.put(Color.VERDE, new Integer(30));
+		tiempoEstado.put(Color.ROJO, new Integer(TIEMPO_ROJO_PREDET));
+		tiempoEstado.put(Color.AMARILLO, new Integer(TIEMPO_AMARILLO_PREDET));
+		tiempoEstado.put(Color.VERDE, new Integer(TIEMPO_VERDE_PREDET));
 	}
 
+	public Semaforo(Avenida avenida, int velocidad, int tiempoRojo, int tiempoVerde){
+		contadorEstado = 0;
+		retrasoUsado = 0;
+		this.avenida = avenida;
+		this.estado = Color.ROJO;
+		setVelOndaVerde(velocidad);
+		tiempoEstado = new Hashtable<Color, Integer>();
+		tiempoEstado.put(Color.ROJO, new Integer(tiempoRojo));
+		tiempoEstado.put(Color.AMARILLO, new Integer(TIEMPO_AMARILLO_PREDET));
+		tiempoEstado.put(Color.VERDE, new Integer(tiempoVerde));
+	}
+	
 	public int getVelOndaVerde(){
 		return velOndaVerde;
 	}
 	
 	public void setVelOndaVerde(int vel){
 		velOndaVerde = vel;
+		setRetraso();
 	}
 	
-	private void setRetraso(int ret){
-		this.retraso = ret;
+	/**
+	 * Calcula el retraso del semaforo en funcion de la velocidad de Onda Verde seteada.
+	 */
+	private void setRetraso(){
+		this.retraso = ( tramoAct.getLongitudTotal() / (velOndaVerde * 1000 / 3600) ) - AJUSTE_RETRASO;
+		retrasoUsado = 0;
 	}
 	
 	/**
@@ -109,9 +136,7 @@ public class Semaforo extends Individuo {
 	 * Actualiza el sem�foro con los valores indicados.
 	 * Se actualiza concurrentemente desde el hilo del algoritmo gen�tico.
 	 */
-	public synchronized void setearTiempos(int retraso, int rojo, int amarillo, int verde){
-		this.retraso = retraso;
-		retrasoUsado = 0;
+	public synchronized void setearTiempos(int rojo, int amarillo, int verde){
 		tiempoEstado.put(Color.ROJO, new Integer(rojo));
 		tiempoEstado.put(Color.AMARILLO, new Integer(amarillo));
 		tiempoEstado.put(Color.VERDE, new Integer(verde));
@@ -136,11 +161,12 @@ public class Semaforo extends Individuo {
 	
 	
 	/**
-	 * Se apunta a lograr aproximadamente un 70% de ocupacion permanente de la calle,
-	 * de forma de optimizar el transito.
-	 * Se evalua:
-	 * - El retraso
-	 * - Los tiempos del rojo y verde
+	 * La aptitud ideal sera de aquel individuo que permita transitar la mayor cantidad de autos
+	 * por la avenida, en el menor tiempo posible.
+	 * Variables ajustables:
+	 * - Velocidad de la Onda Verde
+	 * - Tiempo del semaforo en color Rojo
+	 * - Tiempo del semaforo en color Verde
 	 */
 	@Override
 	public void evaluarAptitud() {
@@ -169,10 +195,10 @@ public class Semaforo extends Individuo {
 	public Individuo reproducir(Individuo ind) {
 		
 		evaluarAptitud();
-		Semaforo nuevo = new Semaforo(this.tramoAct, this.retraso);
-		if(this.retraso < ind.getAptitud()){
-			nuevo.setRetraso((int)ind.getAptitud());
-		}
+		Semaforo nuevo = new Semaforo(avenida, this.tramoAct);
+//		if(this.retraso < ind.getAptitud()){
+//			nuevo.setRetraso((int)ind.getAptitud());
+//		}
 		return nuevo;
 	}
 

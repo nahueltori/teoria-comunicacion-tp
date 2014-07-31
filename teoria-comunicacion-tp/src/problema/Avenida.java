@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
-import core.Individuo;
-
 public class Avenida {
 
 	private static int MANANA = 120;
@@ -17,7 +15,7 @@ public class Avenida {
 	
 	private int multiplicador;
 	
-	private List<Individuo> listaSemaforos;
+	private List<Semaforo> listaSemaforos;
 	
 	public List<Tramo> listaTramos;
 	
@@ -27,13 +25,12 @@ public class Avenida {
 
 	public Avenida(){
 		Scanner parametros;
-		listaSemaforos = new ArrayList<Individuo>();
+		listaSemaforos = new ArrayList<Semaforo>();
 		listaTramos = new ArrayList<Tramo>();
 		try {
 			parametros = new Scanner(new BufferedReader(new FileReader("data/config.txt")));
 			multiplicador = parametros.nextInt();
 			Tramo tramoAnt = null;
-			int i = 0;
 			while(parametros.hasNext()){
 				int longitud = parametros.nextInt();
 				
@@ -42,7 +39,7 @@ public class Avenida {
 				listaTramos.add(tramo);
 
 				//Creo los semaforos para cada tramo de trafico
-				Semaforo semaforo = new Semaforo(tramo, i);
+				Semaforo semaforo = new Semaforo(this, tramo);
 				//Asigno una velocidad inicial para la onda verde
 				semaforo.setVelOndaVerde(20);
 				listaSemaforos.add(semaforo);
@@ -54,7 +51,6 @@ public class Avenida {
 					inicioAv = tramo;
 				}
 				tramoAnt = tramo;
-				i++;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -65,7 +61,7 @@ public class Avenida {
 	/**
 	 * @return Se obtiene la lista de semaforos de la avenida.
 	 */
-	public List<Individuo> getListaIndividuos(){
+	public List<Semaforo> getListaSemaforos(){
 		return listaSemaforos;
 	}
 	

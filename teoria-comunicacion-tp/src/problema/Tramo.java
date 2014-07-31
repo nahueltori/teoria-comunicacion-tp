@@ -12,6 +12,11 @@ public class Tramo {
       private int longitud;
       
       /**
+       * Largo total desde el inicio de la avenida.
+       */
+      private int longitudTotal;
+      
+      /**
        * Maximo porcentaje posible.
        */
       public static final int PORC_TOTAL = 100;
@@ -27,6 +32,11 @@ public class Tramo {
       private List<Auto> autosTrafico;
       
       /**
+       * Conexion al tramo anterior de trafico.
+       */ 
+      private Tramo tramoAnterior;
+      
+      /**
        * Conexion al tramo siguiente de trafico, para enviarle los autos que llegaron al fin de 
        * este tramo.
        */ 
@@ -40,6 +50,7 @@ public class Tramo {
       public Tramo(int longitud){
     	  autosTrafico = new ArrayList<Auto>();
           this.longitud = longitud;
+          this.longitudTotal = longitud;
       }
 
       public void setSemaforo(Semaforo sem){
@@ -121,6 +132,8 @@ public class Tramo {
        */
       public void relacionarTrafico(Tramo trafico){
             tramoSiguiente = trafico;
+            trafico.tramoAnterior = this;
+            actualizarLongitudTotal();
       }
       
       /**
@@ -130,6 +143,17 @@ public class Tramo {
     	  return tramoSiguiente;
       }
 
+      /**
+       * Devuelve el tramo anterior al actual.
+       */
+      public Tramo getTramoAnterior(){
+    	  return tramoAnterior;
+      }
+
+      private void actualizarLongitudTotal(){
+    	  longitudTotal += getTramoAnterior().longitudTotal;
+      }
+      
       @Override
       public String toString(){
     	  String tramo = "";
@@ -151,6 +175,9 @@ public class Tramo {
       }
       public int getLongitud(){
     	  return this.longitud;
+      }
+      public int getLongitudTotal(){
+    	  return this.longitudTotal;
       }
       public Semaforo getSemaforo(){
     	  return this.semaforo;
