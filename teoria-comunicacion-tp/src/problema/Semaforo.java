@@ -72,7 +72,7 @@ public class Semaforo extends Individuo {
 	}
 	
 	/**
-	 * Indica si el semáforo está en verde, para poder avanzar.
+	 * Indica si el semï¿½foro estï¿½ en verde, para poder avanzar.
 	 * @return true si el estado es Color.VERDE; false en cualquier otro caso.
 	 */
 	public boolean puedoPasar(){
@@ -88,8 +88,8 @@ public class Semaforo extends Individuo {
 	}
 	
 	/**
-	 * Método que decide cuál es el próximo estado del semáforo.
-	 * @param estActual es el estado actual del semáforo
+	 * Mï¿½todo que decide cuï¿½l es el prï¿½ximo estado del semï¿½foro.
+	 * @param estActual es el estado actual del semï¿½foro
 	 * @return el proximo estado que debe tener.
 	 */
 	public Color getProximoEstado(Color estActual){
@@ -106,8 +106,8 @@ public class Semaforo extends Individuo {
 	
 	/**
 	 * Actualizar los tiempos que dura el ciclo de cada color.
-	 * Actualiza el semáforo con los valores indicados.
-	 * Se actualiza concurrentemente desde el hilo del algoritmo genético.
+	 * Actualiza el semï¿½foro con los valores indicados.
+	 * Se actualiza concurrentemente desde el hilo del algoritmo genï¿½tico.
 	 */
 	public synchronized void setearTiempos(int retraso, int rojo, int amarillo, int verde){
 		this.retraso = retraso;
@@ -153,17 +153,27 @@ public class Semaforo extends Individuo {
 		
 		
 	}
-
+	
+	/**
+	 * Asigna una aptitud tomada de la poblaciÃ³n considerada de las mejores.
+	 */
 	@Override
-	public void mutar() {
-		// TODO Auto-generated method stub
-
+	public void mutar(double aptitud) {		
+		this.aptitud = aptitud;
 	}
 
+	/**
+	 * Intenta mejorar la aptitud comparando los retrasos de los individuos padre.
+	 */
 	@Override
 	public Individuo reproducir(Individuo ind) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		evaluarAptitud();
+		Semaforo nuevo = new Semaforo(this.tramoAct, this.retraso);
+		if(this.retraso < ind.getAptitud()){
+			nuevo.setRetraso((int)ind.getAptitud());
+		}
+		return nuevo;
 	}
 
 }

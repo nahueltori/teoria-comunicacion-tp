@@ -1,7 +1,7 @@
 package core;
 
 
-public abstract class Individuo{
+public abstract class Individuo implements Comparable<Individuo>{
 
   protected double aptitud;
 
@@ -20,17 +20,21 @@ public abstract class Individuo{
   }
 
 	/** 
-	 * Método que evalua la aptitud del individuo.
+	 * Mï¿½todo que evalua la aptitud del individuo.
 	 * Cada implementacion debe implementarlo. */
   public abstract void evaluarAptitud();
 
 	/** 
-	 * Método para mutar al individuo. */
-  public abstract void mutar();
+	 * Mï¿½todo para mutar al individuo. */
+  public abstract void mutar(double aptitud);
 
 	/** 
-	 * Método para reproducir un nuevo individuo, cruzándolo con otro. */
+	 * Mï¿½todo para reproducir un nuevo individuo, cruzï¿½ndolo con otro. */
   public abstract Individuo reproducir(Individuo ind);
 
-
+  
+  	@Override
+	public int compareTo(Individuo o) {
+		return Double.compare(this.aptitud, o.getAptitud());
+	}
 }
