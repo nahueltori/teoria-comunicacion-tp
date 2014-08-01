@@ -5,10 +5,6 @@ public abstract class Individuo implements Comparable<Individuo>{
 
   protected double aptitud;
 
-  public Individuo(){
-//    evaluarAptitud();
-  }
-
   public double getAptitud(){
     return aptitud;
   }

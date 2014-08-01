@@ -151,7 +151,8 @@ public class Tramo {
       }
 
       private void actualizarLongitudTotal(){
-    	  longitudTotal += getTramoAnterior().longitudTotal;
+    	  if(tramoAnterior != null)
+    		  longitudTotal += getTramoAnterior().longitudTotal;
       }
       
       @Override

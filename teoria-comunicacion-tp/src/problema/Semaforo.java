@@ -30,7 +30,7 @@ public class Semaforo extends Individuo {
 	private int retrasoUsado;
 	
 	private int velOndaVerde;
-	private Tramo tramoAct;
+	private int posicion;
 	private Avenida avenida;
 	private Hashtable<Color, Integer> tiempoEstado;
 	
@@ -39,12 +39,12 @@ public class Semaforo extends Individuo {
 	 * @param avenida
 	 * @param tramo
 	 */
-	public Semaforo(Avenida avenida, Tramo tramo){
+	public Semaforo(Avenida avenida, int posicion){
 		contadorEstado = 0;
 		retrasoUsado = 0;
 		this.avenida = avenida;
 		this.estado = Color.ROJO;
-		tramoAct = tramo;
+		this.posicion = posicion;
 		tiempoEstado = new Hashtable<Color, Integer>();
 		tiempoEstado.put(Color.ROJO, new Integer(TIEMPO_ROJO_PREDET));
 		tiempoEstado.put(Color.AMARILLO, new Integer(TIEMPO_AMARILLO_PREDET));
@@ -56,11 +56,17 @@ public class Semaforo extends Individuo {
 		retrasoUsado = 0;
 		this.avenida = avenida;
 		this.estado = Color.ROJO;
+		this.posicion = 0;
 		setVelOndaVerde(velocidad);
 		tiempoEstado = new Hashtable<Color, Integer>();
 		tiempoEstado.put(Color.ROJO, new Integer(tiempoRojo));
 		tiempoEstado.put(Color.AMARILLO, new Integer(TIEMPO_AMARILLO_PREDET));
 		tiempoEstado.put(Color.VERDE, new Integer(tiempoVerde));
+		evaluarAptitud();
+	}
+	
+	public int getPos(){
+		return posicion;
 	}
 	
 	public int getVelOndaVerde(){
@@ -76,7 +82,8 @@ public class Semaforo extends Individuo {
 	 * Calcula el retraso del semaforo en funcion de la velocidad de Onda Verde seteada.
 	 */
 	private void setRetraso(){
-		this.retraso = ( tramoAct.getLongitudTotal() / (velOndaVerde * 1000 / 3600) ) - AJUSTE_RETRASO;
+		this.retraso = Math.round(( (float)avenida.getLongitudTotal(posicion) 
+									/ ((float)velOndaVerde * 1000 / 3600) ) - AJUSTE_RETRASO);
 		retrasoUsado = 0;
 	}
 	
@@ -87,13 +94,15 @@ public class Semaforo extends Individuo {
 	synchronized public void cicloSemaforo(int tiempo){
 		if(retrasoUsado < retraso){
 			retrasoUsado += tiempo;
+			if(retrasoUsado == retraso){
+				cambiarColor();
+			}
 		}
 		else{
 			contadorEstado += tiempo;
 			/* Si el contador del estado actual llego al limite, cambio de estado. */
 			if(contadorEstado >= (tiempoEstado.get(estado)).intValue()){
-				estado = getProximoEstado(estado);
-				contadorEstado = 0;
+				cambiarColor();
 			}
 		}
 	}
@@ -119,16 +128,19 @@ public class Semaforo extends Individuo {
 	 * @param estActual es el estado actual del sem�foro
 	 * @return el proximo estado que debe tener.
 	 */
-	public Color getProximoEstado(Color estActual){
-		switch(estActual){
+	public void cambiarColor(){
+		switch(estado){
 		case ROJO:
-			return Color.VERDE;
+			estado = Color.VERDE;
+			break;
 		case AMARILLO:
-			return Color.ROJO;
+			estado = Color.ROJO;
+			break;
 		case VERDE:
-			return Color.AMARILLO;
+			estado = Color.AMARILLO;
+			break;
 		}
-		return Color.ROJO;
+		contadorEstado = 0;
 	}
 	
 	/**
@@ -159,10 +171,14 @@ public class Semaforo extends Individuo {
 		return semaforo;
 	}
 	
+	@Override
+	public boolean equals(Object o){
+		return posicion == ((Semaforo)o).posicion;
+	}
 	
 	/**
-	 * La aptitud ideal sera de aquel individuo que permita transitar la mayor cantidad de autos
-	 * por la avenida, en el menor tiempo posible.
+	 * La aptitud ideal sera de aquel individuo que permita transitar a los autos
+	 * por la avenida, en el menor tiempo posible, sin congestionarse.
 	 * Variables ajustables:
 	 * - Velocidad de la Onda Verde
 	 * - Tiempo del semaforo en color Rojo
@@ -172,11 +188,14 @@ public class Semaforo extends Individuo {
 	public void evaluarAptitud() {
 		aptitud = 0;
 		
-		//El retraso ideal es la longitud del tramo dividido los metros por segundo que puede 
-		//avanzar un auto, con unos segundos de ajuste. Unidades: segundos.
-		double retrasoIdeal = ( tramoAct.getLongitud() / (velOndaVerde * 1000 / 3600) ) - AJUSTE_RETRASO;
-		aptitud += (retrasoIdeal / (double) retraso) * PESO_APTITUD_RETRASO;
+		//Tiempo total de transito comenzando en el segundo 0, hasta el final de la AVENIDA
+		int tiempoTotal = 0;
+		for(posicion = 0; posicion<avenida.getTramos().size(); posicion++){
+			tiempoTotal += avenida.getLongitud(posicion) / (velOndaVerde * 1000 / 3600);
+		}
+		aptitud += tiempoTotal;
 		
+		//Ecuacion de ajuste de los tiempos rojo y verde, y que relacione el estado del transito.
 		
 	}
 	
@@ -195,7 +214,7 @@ public class Semaforo extends Individuo {
 	public Individuo reproducir(Individuo ind) {
 		
 		evaluarAptitud();
-		Semaforo nuevo = new Semaforo(avenida, this.tramoAct);
+		Semaforo nuevo = new Semaforo(avenida, posicion);
 //		if(this.retraso < ind.getAptitud()){
 //			nuevo.setRetraso((int)ind.getAptitud());
 //		}

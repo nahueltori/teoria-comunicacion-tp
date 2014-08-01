@@ -31,6 +31,7 @@ public class Avenida {
 			parametros = new Scanner(new BufferedReader(new FileReader("data/config.txt")));
 			multiplicador = parametros.nextInt();
 			Tramo tramoAnt = null;
+			int i = 0;
 			while(parametros.hasNext()){
 				int longitud = parametros.nextInt();
 				
@@ -39,7 +40,7 @@ public class Avenida {
 				listaTramos.add(tramo);
 
 				//Creo los semaforos para cada tramo de trafico
-				Semaforo semaforo = new Semaforo(this, tramo);
+				Semaforo semaforo = new Semaforo(this, i);
 				//Asigno una velocidad inicial para la onda verde
 				semaforo.setVelOndaVerde(20);
 				listaSemaforos.add(semaforo);
@@ -51,6 +52,7 @@ public class Avenida {
 					inicioAv = tramo;
 				}
 				tramoAnt = tramo;
+				i++;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -103,6 +105,26 @@ public class Avenida {
 				inicioAv.recibirTrafico(new Auto());
 			}
 		}
+	}
+	
+	/**
+	 * Se obtiene la longitud del tramo para un semaforo dado.
+	 * @param sem para indicar la posicion que busco
+	 * @return
+	 */
+	public int getLongitud(int pos){
+		Tramo tramo = listaTramos.get(pos);
+		return tramo.getLongitud();
+	}
+	
+	/**
+	 * Se obtiene la longitud total de la avenida hasta un semaforo dado.
+	 * @param sem para indicar la posicion que busco
+	 * @return
+	 */
+	public int getLongitudTotal(int pos){
+		Tramo tramo = listaTramos.get(pos);
+		return tramo.getLongitudTotal();
 	}
 	
 	@Override

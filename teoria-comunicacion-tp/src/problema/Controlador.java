@@ -22,8 +22,8 @@ public class Controlador {
 		dibu.setAvenida(avenida);
 		
 		List<Individuo> listaIndividuos = crearIndividuosIniciales(avenida);
-		Evolucion evolucion = new Evolucion(listaIndividuos, 10);
-		evolucion.run();
+//		Evolucion evolucion = new Evolucion(listaIndividuos, 10);
+//		evolucion.run();
 		
 		for(int i=0; i<360; i++){
 			avenida.cicloAvenida(TIEMPO_CICLO);
@@ -49,7 +49,7 @@ public class Controlador {
 		Random rRojo = new Random();
 		Random rVerde = new Random();
 		for(int i=0; i<CANT_INDIVIDUOS; i++){
-			lista.add(new Semaforo(avenida, rVelocidad.nextInt(70), rRojo.nextInt(90), rVerde.nextInt(90)));
+			lista.add(new Semaforo(avenida, rVelocidad.nextInt(70) + 1, rRojo.nextInt(90), rVerde.nextInt(90)));
 		}
 		return lista;
 	}
