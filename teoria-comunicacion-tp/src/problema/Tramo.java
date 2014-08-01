@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 public class Tramo {
 	
-	
+	private static int ANCHOAUTO     =   10;	
       /**
        * Largo del tramo representado.
        */ 
@@ -85,7 +85,7 @@ public class Tramo {
 			  }
 			  /* Si aun no llegue al fin de tramo, avanzo los autos. */ 
 			  else{
-        		  auto.avanzar(tiempo);
+					  auto.avanzar(tiempo,this);
     		  }
     	  }
       }
@@ -182,5 +182,24 @@ public class Tramo {
       }
       public Semaforo getSemaforo(){
     	  return this.semaforo;
+      }
+      
+      public int verificarAvance(Auto aActual, int distAvance){
+    	   /**
+           * Retorna el avance permitido verificando si tiene autos delante. 
+           * Regresa la menor de las distancias
+           * Resta ANCHOAUTO para tener en cuenta el tamanio del auto delantero
+           */ 
+       	  for(Iterator<Auto> i = autosTrafico.iterator(); i.hasNext(); ){
+    		  Auto auto = i.next();
+    		  int distEntreAutos = auto.getPosicion() - aActual.getPosicion();
+    		  if ( distEntreAutos >= 1 && distEntreAutos <= distAvance){
+    			  int aux = auto.getPosicion() - aActual.getPosicion() - ANCHOAUTO;
+    			  if (aux >=0) distAvance = aux;
+    			  else distAvance = 0;
+    			  System.out.println("No puedo avanzar. Desde la posicion "+aActual.getPosicion()+ " quiero avanzar " + distAvance + " y choco con el auto en la posicion " + auto.getPosicion() ); 
+    		  }
+       	  }
+    	  return distAvance;
       }
 }
