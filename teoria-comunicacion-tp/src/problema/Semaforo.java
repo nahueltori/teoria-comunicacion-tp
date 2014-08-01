@@ -189,9 +189,9 @@ public class Semaforo extends Individuo {
 		aptitud = 0;
 		
 		//Tiempo total de transito comenzando en el segundo 0, hasta el final de la AVENIDA
-		int tiempoTotal = 0;
+		float tiempoTotal = 0;
 		for(posicion = 0; posicion<avenida.getTramos().size(); posicion++){
-			tiempoTotal += avenida.getLongitud(posicion) / (velOndaVerde * 1000 / 3600);
+			tiempoTotal += (float)avenida.getLongitud(posicion) / ((float)velOndaVerde * 1000 / 3600);
 		}
 		aptitud += tiempoTotal;
 		

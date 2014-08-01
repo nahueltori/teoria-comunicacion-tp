@@ -13,8 +13,6 @@ public class Avenida {
 	private static int TARDE = 240;
 	private static int NOCHE = 360;
 	
-	private int multiplicador;
-	
 	private List<Semaforo> listaSemaforos;
 	
 	public List<Tramo> listaTramos;
@@ -28,8 +26,7 @@ public class Avenida {
 		listaSemaforos = new ArrayList<Semaforo>();
 		listaTramos = new ArrayList<Tramo>();
 		try {
-			parametros = new Scanner(new BufferedReader(new FileReader("data/config.txt")));
-			multiplicador = parametros.nextInt();
+			parametros = new Scanner(new BufferedReader(new FileReader("data/tramos.txt")));
 			Tramo tramoAnt = null;
 			int i = 0;
 			while(parametros.hasNext()){
@@ -41,8 +38,6 @@ public class Avenida {
 
 				//Creo los semaforos para cada tramo de trafico
 				Semaforo semaforo = new Semaforo(this, i);
-				//Asigno una velocidad inicial para la onda verde
-				semaforo.setVelOndaVerde(20);
 				listaSemaforos.add(semaforo);
 				tramo.setSemaforo(semaforo);
 				
@@ -57,6 +52,10 @@ public class Avenida {
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("No se encontro el archivo de configuracion.");
+		}
+		for(Semaforo sem: listaSemaforos){
+			//Asigno una velocidad inicial para la onda verde
+			sem.setVelOndaVerde(20);
 		}
 	}
 	
@@ -73,7 +72,6 @@ public class Avenida {
 	 * @param tiempo Recibe como parametro el tiempo transcurrido desde el ultimo ciclo.
 	 */
 	public void cicloAvenida(int tiempo){
-		tiempo *= multiplicador;
 		crearTraficoAleatoriamente(tiempo);
 		for(Tramo tramo : listaTramos){
 			tramo.cicloTrafico(tiempo);
