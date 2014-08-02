@@ -71,7 +71,7 @@ public class Semaforo extends Individuo {
 		}
 	}
 
-	public Semaforo(Avenida avenida, int velocidad, int tiempoRojo, int tiempoVerde){
+/*	public Semaforo(Avenida avenida, int velocidad, int tiempoRojo, int tiempoVerde){
 		contadorEstado = 0;
 		retrasoUsado = 0;
 		this.avenida = avenida;
@@ -84,7 +84,7 @@ public class Semaforo extends Individuo {
 		tiempoEstado.put(Color.VERDE, new Integer(tiempoVerde));
 		evaluarAptitud();
 	}
-	
+*/	
 	public int getPos(){
 		return posicion;
 	}
