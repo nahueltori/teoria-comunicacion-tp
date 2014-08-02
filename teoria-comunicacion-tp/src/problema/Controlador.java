@@ -46,7 +46,7 @@ public class Controlador {
 			avenida.cicloAvenida((int) (multiploCiclo * UN_SEG));
 //			System.out.println("Ciclo N° " + i);
 //			System.out.println(avenida.toString());
-			dibu.update(i);
+			dibu.update(i, avenida.getTrafico());
 			try {
 				Thread.sleep((long) (multiploDelay * MIL_MILISEG));
 			} catch (InterruptedException e) {
