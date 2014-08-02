@@ -20,7 +20,8 @@ public class Avenida {
 	private Tramo inicioAv;
 	
 	private int hora;
-
+	private int id = 0;
+	
 	public Avenida(){
 		Scanner parametros;
 		listaSemaforos = new ArrayList<Semaforo>();
@@ -100,7 +101,8 @@ public class Avenida {
 		}
 		for(int i=0; i<varAleatCantidad; i++){
 			if(inicioAv.estadoTrafico() < Tramo.PORC_TOTAL){
-				inicioAv.recibirTrafico(new Auto());
+				inicioAv.recibirTrafico(new Auto(id));
+				id++;
 			}
 		}
 	}

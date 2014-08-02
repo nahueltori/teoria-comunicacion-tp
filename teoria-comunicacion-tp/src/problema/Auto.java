@@ -2,8 +2,18 @@ package problema;
 
 import java.util.Random;
 
-public class Auto {
+public class Auto{
 
+	private int idAuto;
+	
+	public Auto(int id){
+		idAuto = id;
+	}
+	
+	public int getId(){
+		
+		return idAuto;
+	}
 	/**
 	 * Posición en metros en el tramo actual.
 	 */

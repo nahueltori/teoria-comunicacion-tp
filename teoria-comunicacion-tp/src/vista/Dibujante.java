@@ -85,10 +85,12 @@ public class Dibujante extends JPanel {
 			g2d.fillRect(xTramo + (ANCHOSENDA*6), YTRAMO, ANCHOSENDA, ALTOTRAMO);			
 		
 		// Dibujo todos los autos del tramo
-			int aux = 0;
 			for(Iterator<Auto> a = listaAutos.iterator(); a.hasNext(); ){
 				Auto auto = a.next();
 				int xAuto = auto.getPosicion() + xTramo;
+				int aux = auto.getId();
+				aux = aux % 7;
+				System.out.println(aux);
 				switch (aux){
 					case 0: g2d.setColor(java.awt.Color.BLUE); break;
 					case 1: g2d.setColor(java.awt.Color.BLACK); break;
