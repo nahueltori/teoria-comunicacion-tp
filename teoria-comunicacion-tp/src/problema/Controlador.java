@@ -39,8 +39,7 @@ public class Controlador {
 		Dibujante dibu = new Dibujante();
 		dibu.setAvenida(avenida);
 		
-//		List<Individuo> listaIndividuos = avenida.getListaSemaforos();
-		//crearIndividuosIniciales(avenida);
+		List<Individuo> listaIndividuos = crearIndividuosIniciales(avenida);
 //		Evolucion evolucion = new Evolucion(listaIndividuos, 10);
 //		evolucion.run();
 		
@@ -48,7 +47,7 @@ public class Controlador {
 			avenida.cicloAvenida((int) (multiploCiclo * UN_SEG));
 //			System.out.println("Ciclo N° " + i);
 //			System.out.println(avenida.toString());
-			dibu.update(i);
+			dibu.update(i, avenida.getTrafico());
 			try {
 				Thread.sleep((long) (multiploDelay * MIL_MILISEG));
 			} catch (InterruptedException e) {
@@ -63,8 +62,7 @@ public class Controlador {
 //		System.exit(0);
 	}
 	
-	//Para que crear individuos iniciales si ya la avenida los tiene????
-/*	private static List<Individuo> crearIndividuosIniciales(Avenida avenida) {
+	private static List<Individuo> crearIndividuosIniciales(Avenida avenida) {
 		List<Individuo> lista = new ArrayList<Individuo>();
 		Random rVelocidad = new Random();
 		Random rRojo = new Random();
@@ -74,6 +72,6 @@ public class Controlador {
 		}
 		return lista;
 	}
-*/
+
 	  
 }

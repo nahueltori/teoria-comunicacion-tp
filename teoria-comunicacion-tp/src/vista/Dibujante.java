@@ -21,7 +21,8 @@ public class Dibujante extends JPanel {
 
 	JFrame frame = null;
 	Avenida avenida;
-	int ciclo = 0;
+	int ciclo;
+	float trafico;
 	
 	private static int ANCHOVENTANA  = 1500;
 	private static int ALTOVENTANA   =  200;
@@ -46,10 +47,18 @@ public class Dibujante extends JPanel {
     	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     	this.frame = frame;
     	this.avenida = a;
+    	ciclo = 0;
+    	trafico = 0;
     }
 
-	public void update(int ciclo) {
+	/**
+	 * Recibe como parametro el numero de segundos, y el estado del trafico en ese momento.
+	 * @param ciclo
+	 * @param trafico
+	 */
+	public void update(int ciclo, float trafico) {
 		this.ciclo = ciclo;
+		this.trafico = trafico;
 		this.repaint();
 	}
 
@@ -62,6 +71,14 @@ public class Dibujante extends JPanel {
 		// Imprimo el numero de Ciclo
 		g2d.setFont(serifFont);
 	    g.drawString("Segundos transcurridos: "+String.valueOf(ciclo), 15, 15);
+	    if(trafico >= 1){
+	    	int traficoDis = Math.round(trafico);
+		    g.drawString("Trafico entrada: "+String.valueOf(traficoDis)+" autos/segundo", 15, 30);
+	    }
+	    else{
+	    	int traficoDis = Math.round(1 / trafico);
+		    g.drawString("Trafico entrada: "+String.valueOf(traficoDis)+" segundos/auto", 15, 30);
+	    }
 		
 		List<Tramo> listaTramos = avenida.getTramos();
 		for(Iterator<Tramo> t = listaTramos.iterator(); t.hasNext(); ){

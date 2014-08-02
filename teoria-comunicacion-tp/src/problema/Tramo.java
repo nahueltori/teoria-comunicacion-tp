@@ -66,7 +66,7 @@ public class Tramo {
        * @param tiempo El parametro tiempo es la cantidad de segundos transcurridos en el ciclo.
        * @param velocidadEl parametro velocidad está en KM/H, y es la sugerida por la Onda Verde para que transiten los autos.
        */
-      public void cicloTrafico(int tiempo){
+      public synchronized void cicloTrafico(int tiempo){
     	  semaforo.cicloSemaforo(tiempo);
     	  
     	  for(Iterator<Auto> i = autosTrafico.iterator(); i.hasNext(); ){
@@ -103,7 +103,7 @@ public class Tramo {
        * Metodo que agrega un auto al tramo de trafico actual.
        * Reinicia sus datos de posición, y le setea la velocidad recomendada por la Onda Verde.
        */
-      public void recibirTrafico(Auto auto){
+      public synchronized void recibirTrafico(Auto auto){
     	  auto.reiniciar(longitud);
     	  auto.setVelocidad(semaforo.getVelOndaVerde());
     	  autosTrafico.add(auto);
