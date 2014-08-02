@@ -112,7 +112,8 @@ public class Dibujante extends JPanel {
 			g2d.fillOval(xSemaforo, YSEMAFORO, ANCHOSEMAFORO, ALTOSEMAFORO);
 			
 		// Me posiciono en el proximo tramo	
-			xTramo = xTramo + tramo.getLongitud()+ANCHOAUTO;
+	//		xTramo = xTramo + tramo.getLongitud()+ANCHOAUTO;
+			xTramo = xTramo + tramo.getLongitud();
 		}
 	}	
 
