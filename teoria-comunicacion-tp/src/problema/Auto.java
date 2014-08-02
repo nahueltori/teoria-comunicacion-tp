@@ -21,8 +21,6 @@ public class Auto {
 	
 	public void avanzar(int tiempo, Tramo tramo){
 		//Vario aleatoriamente un poco la velocidad
-		Random rand = new Random();
-		velocidad *= (1 + rand.nextFloat());
 		int distAvance = velocidad * tiempo * 1000 / 3600;
 
 		System.out.println("Distancia de avance sin correccion: "+ distAvance);
@@ -50,7 +48,9 @@ public class Auto {
 	}
 	
 	public void setVelocidad(int vel){
+		Random rand = new Random();
 		velocidad = vel;
+		velocidad += (rand.nextInt(4) - 2);
 	}
 	
 	public int getVelocidad(){

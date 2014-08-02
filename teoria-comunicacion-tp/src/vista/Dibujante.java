@@ -49,6 +49,7 @@ public class Dibujante extends JPanel {
     }
 
 	public void update(int ciclo) {
+		this.ciclo = ciclo;
 		this.repaint();
 	}
 
@@ -60,8 +61,7 @@ public class Dibujante extends JPanel {
 		int xTramo = 0;
 		// Imprimo el numero de Ciclo
 		g2d.setFont(serifFont);
-	    g.drawString("Numero de ciclo: "+String.valueOf(ciclo), 15, 15);
-		ciclo++;
+	    g.drawString("Segundos transcurridos: "+String.valueOf(ciclo), 15, 15);
 		
 		List<Tramo> listaTramos = avenida.getTramos();
 		for(Iterator<Tramo> t = listaTramos.iterator(); t.hasNext(); ){

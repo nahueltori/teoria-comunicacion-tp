@@ -86,15 +86,15 @@ public class Avenida {
 		int varAleatCantidad = 0;
 		hora += tiempo;
 		if(hora < MANANA){
-			varAleatCantidad = rand.nextInt(6); 
+			varAleatCantidad = rand.nextInt(3); 
 		}
 		else{
 			if(hora < TARDE){
-				varAleatCantidad = rand.nextInt(2);
+				varAleatCantidad = rand.nextInt(1);
 			}
 			else{
 				if(hora < NOCHE){
-					varAleatCantidad = rand.nextInt(4);
+					varAleatCantidad = rand.nextInt(3);
 				}
 			}
 		}

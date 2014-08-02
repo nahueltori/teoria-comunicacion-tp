@@ -28,6 +28,7 @@ public class Controlador {
 		Scanner parametros;
 		try {
 			parametros = new Scanner(new BufferedReader(new FileReader("data/controlador.txt")));
+			multiploCiclo = parametros.nextDouble();
 			multiploDelay = parametros.nextDouble();
 			cantIndividuos = parametros.nextInt();
 		} catch (FileNotFoundException e1) {
@@ -42,7 +43,7 @@ public class Controlador {
 //		evolucion.run();
 		
 		for(int i=0; ; i++){
-			avenida.cicloAvenida((int) (UN_SEG));
+			avenida.cicloAvenida((int) (multiploCiclo * UN_SEG));
 //			System.out.println("Ciclo N° " + i);
 //			System.out.println(avenida.toString());
 			dibu.update(i);
