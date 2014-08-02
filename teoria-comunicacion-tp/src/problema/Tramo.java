@@ -184,20 +184,19 @@ public class Tramo {
     	  return this.semaforo;
       }
       
-      public int verificarAvance(Auto aActual, int distAvance){
+      public int verificarAvance(Auto autoActual, int distAvance){
     	   /**
            * Retorna el avance permitido verificando si tiene autos delante. 
            * Regresa la menor de las distancias
            * Resta ANCHOAUTO para tener en cuenta el tamanio del auto delantero
            */ 
        	  for(Iterator<Auto> i = autosTrafico.iterator(); i.hasNext(); ){
-    		  Auto auto = i.next();
-    		  int distEntreAutos = auto.getPosicion() - aActual.getPosicion();
-    		  if ( distEntreAutos >= 1 && distEntreAutos <= distAvance){
-    			  int aux = auto.getPosicion() - aActual.getPosicion() - ANCHOAUTO;
-    			  if (aux >=0) distAvance = aux;
-    			  else distAvance = 0;
-    			  System.out.println("No puedo avanzar. Desde la posicion "+aActual.getPosicion()+ " quiero avanzar " + distAvance + " y choco con el auto en la posicion " + auto.getPosicion() ); 
+    		  Auto autoOtro = i.next();
+    		  int distEntreAutos = autoOtro.getPosicion() - autoActual.getPosicion();
+    		  if ( distEntreAutos >= 1 && distEntreAutos - ANCHOAUTO < distAvance ){
+ //   			  System.out.print("No puedo avanzar. Desde la posicion "+autoActual.getPosicion()+ " quiero avanzar " + distAvance + " y choco con el auto en la posicion " + autoOtro.getPosicion() ); 
+    			  distAvance = distEntreAutos - ANCHOAUTO;
+ //   			  System.out.println("Nueva distancia avance: "+distAvance);
     		  }
        	  }
     	  return distAvance;

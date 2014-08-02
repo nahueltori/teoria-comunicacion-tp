@@ -23,19 +23,19 @@ public class Auto {
 		//Vario aleatoriamente un poco la velocidad
 		int distAvance = velocidad * tiempo * 1000 / 3600;
 
-		System.out.println("Distancia de avance sin correccion: "+ distAvance);
+//		System.out.println("Distancia de avance sin correccion: "+ distAvance);
 		// Correccion de la posicion si me pase del final del tramo
 		if(posicion + distAvance > posicionMax)
 			distAvance = posicionMax - posicion;
-		System.out.println("Distancia de avance con correccion del final: "+ distAvance);
+//		System.out.println("Distancia de avance con correccion del final: "+ distAvance);
 		
 		// Correccion de autos adelante
 		distAvance = tramo.verificarAvance(this, distAvance);
-		System.out.println("Distancia de avance corregida: "+distAvance);
+//		System.out.println("Distancia de avance corregida: "+distAvance);
 		
 		// Asigno la nueva posicion
 		posicion += distAvance;
-		System.out.println("Avanzo desde la "+(posicion-distAvance)+ " a la posicion " + posicion ); 
+//		System.out.println("Avanzo desde la "+(posicion-distAvance)+ " a la posicion " + posicion ); 
 	}
 	
 	public int getPosicion(){
