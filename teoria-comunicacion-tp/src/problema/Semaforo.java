@@ -15,11 +15,6 @@ public class Semaforo extends Individuo {
 	 * Variable para que el retraso sea un poco menor que el tiempo justo
 	 */
 	private final int AJUSTE_RETRASO = 2;
-
-/*	private final int TIEMPO_ROJO_PREDET = 30;
-	private final int TIEMPO_AMARILLO_PREDET = 2;
-	private final int TIEMPO_VERDE_PREDET = 60;
-*/		
 	private final double PESO_APTITUD_RETRASO = 0.3; 
 	
 	/**
