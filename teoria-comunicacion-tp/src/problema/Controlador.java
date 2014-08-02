@@ -23,6 +23,7 @@ public class Controlador {
 	static int cantIndividuos;
 	
 	/** Funcion principal. */
+	@SuppressWarnings("resource")
 	public static void main(String[] args) {
 		
 		Scanner parametros;

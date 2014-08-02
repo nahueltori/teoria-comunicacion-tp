@@ -1,6 +1,8 @@
 package problema;
 
+import java.io.*;
 import java.util.Hashtable;
+import java.util.Scanner;
 
 import core.Individuo;
 
@@ -14,10 +16,10 @@ public class Semaforo extends Individuo {
 	 */
 	private final int AJUSTE_RETRASO = 2;
 
-	private final int TIEMPO_ROJO_PREDET = 30;
+/*	private final int TIEMPO_ROJO_PREDET = 30;
 	private final int TIEMPO_AMARILLO_PREDET = 2;
 	private final int TIEMPO_VERDE_PREDET = 60;
-		
+*/		
 	private final double PESO_APTITUD_RETRASO = 0.3; 
 	
 	/**
@@ -34,6 +36,11 @@ public class Semaforo extends Individuo {
 	private Avenida avenida;
 	private Hashtable<Color, Integer> tiempoEstado;
 	
+    private File archivo = null;
+    private FileReader fr = null;
+    private BufferedReader br = null;
+    private String linea = null;
+	
 	/**
 	 * Constructor utilizado para el modelo a simular.
 	 * @param avenida
@@ -45,10 +52,28 @@ public class Semaforo extends Individuo {
 		this.avenida = avenida;
 		this.estado = Color.ROJO;
 		this.posicion = posicion;
-		tiempoEstado = new Hashtable<Color, Integer>();
-		tiempoEstado.put(Color.ROJO, new Integer(TIEMPO_ROJO_PREDET));
-		tiempoEstado.put(Color.AMARILLO, new Integer(TIEMPO_AMARILLO_PREDET));
-		tiempoEstado.put(Color.VERDE, new Integer(TIEMPO_VERDE_PREDET));
+
+		try{
+			//Cargamos el archivo de la ruta relativa
+			archivo = new File("data/semaforo.txt");
+			//Cargamos el objeto FileReader
+			fr = new FileReader(archivo);
+			//Creamos un buffer de lectura
+			br = new BufferedReader(fr);
+
+			String[] datos = null;
+			
+			linea = br.readLine();
+			datos = linea.split(";");
+			
+			tiempoEstado = new Hashtable<Color, Integer>();
+			tiempoEstado.put(Color.ROJO, Integer.parseInt(datos[0]));
+			tiempoEstado.put(Color.AMARILLO, Integer.parseInt(datos[1]));
+			tiempoEstado.put(Color.VERDE, Integer.parseInt(datos[2]));
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("No se encontro el archivo de configuracion de Semaforos.");
+		}
 	}
 
 	public Semaforo(Avenida avenida, int velocidad, int tiempoRojo, int tiempoVerde){
@@ -60,7 +85,7 @@ public class Semaforo extends Individuo {
 		setVelOndaVerde(velocidad);
 		tiempoEstado = new Hashtable<Color, Integer>();
 		tiempoEstado.put(Color.ROJO, new Integer(tiempoRojo));
-		tiempoEstado.put(Color.AMARILLO, new Integer(TIEMPO_AMARILLO_PREDET));
+		tiempoEstado.put(Color.AMARILLO, 2);
 		tiempoEstado.put(Color.VERDE, new Integer(tiempoVerde));
 		evaluarAptitud();
 	}
