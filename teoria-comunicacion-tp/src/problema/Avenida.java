@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import problema.Semaforo.Color;
 import core.Individuo;
@@ -99,7 +100,7 @@ public class Avenida {
 		trafico = new Trafico();
 		trafico.start();
 		listaSemaforos = new ArrayList<Semaforo>();
-		listaTramos = new ArrayList<Tramo>();
+		listaTramos = new CopyOnWriteArrayList<Tramo>();
 		try {
 			parametros = new Scanner(new BufferedReader(new FileReader("data/tramos.txt")));
 			Tramo tramoAnt = null;
