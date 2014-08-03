@@ -105,7 +105,7 @@ public class Semaforo extends Individuo {
 	private void setRetraso(){
 		this.retraso = Math.round(( (float)avenida.getLongitudTotal(posicion) 
 									/ ((float)velOndaVerde * 1000 / 3600) ) - AJUSTE_RETRASO);
-		retrasoUsado = 0;
+//		retrasoUsado = 0;
 	}
 	
 	/**
