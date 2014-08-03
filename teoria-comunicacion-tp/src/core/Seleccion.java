@@ -27,7 +27,8 @@ public class Seleccion{
 	  if(poblacion.getTamanioPob() > 0){	
 		  indivSeleccionados = new ArrayList<Individuo>();
 		  torneo();
-	      ruleta();
+//Lo comento ya que me deja una posicion nula en la lista de individuos		  
+//	      ruleta();
 	      grabarSeleccion();
 	  }
   }
@@ -67,8 +68,6 @@ public class Seleccion{
    * 
    */
   private void ruleta(){
-	poblacion.recalcularAptitud();
-	
 	TreeMap<Float,Individuo> individuos = getListaIndividuosEnRuleta();
 	
 	//Genero una posición aleatoria para seleccionar al individuo.

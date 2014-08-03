@@ -6,7 +6,7 @@ import problema.Avenida;
 
 public class Evolucion extends Thread{
   
-	public static final int APTITUD_MINIMA = 90;
+	public static final float APTITUD_MINIMA = (float) 0.9;
 	public static final int PORC_MUTACION = 50;
 	
   Poblacion poblacion;
@@ -21,7 +21,7 @@ public class Evolucion extends Thread{
   public Evolucion(List<Individuo> individuos, Avenida avenida){
     this.avenida = avenida;
     poblacion = new Poblacion(individuos);
-   	criterio = new CriterioFinMinAptitud(poblacion, PORC_MUTACION);
+   	criterio = new CriterioFinMinAptitud(poblacion, APTITUD_MINIMA);
     
     seleccion = new Seleccion(poblacion);
     reproduccion = new Reproduccion(poblacion);
@@ -31,23 +31,42 @@ public class Evolucion extends Thread{
   @Override
   public void run(){
     
+	  //Espero medio segundo, a que comience la simulacion del modelo.
+	  try {
+		sleep(500);
+	} catch (InterruptedException e) {
+		e.printStackTrace();
+	}
+	  
 	while(true){
+		  
 	    while(!criterio.terminado()){
 	        
+	        poblacion.pasarDeGeneracion();
+
 	        seleccion.seleccionar();
 
 	        reproduccion.multipunto();
 
 	        mutacion.mutar();
 
-	        poblacion.pasarDeGeneracion();
-
-	        poblacion.mostrarDatos();
+//	        poblacion.mostrarDatos();
 	        
+			try {
+				sleep(50);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 	    }
+	    avenida.aplicarResultado(poblacion.getMejorIndividuo());
 	    
+	    //Recalculo de un nuevo semaforo cada 5 segundos
+		try {
+			sleep(5000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
-    
     
   }
   

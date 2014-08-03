@@ -7,6 +7,9 @@ import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
+import problema.Semaforo.Color;
+import core.Individuo;
+
 public class Avenida {
 
 	private static int MANANA = 500;
@@ -200,8 +203,21 @@ public class Avenida {
 	 * por el algoritmo genetico.
 	 * @param ideal
 	 */
-	public void aplicarSemaforo(Semaforo ideal){
-		
+	public synchronized void aplicarResultado(Individuo indIdeal){
+		Semaforo ideal = (Semaforo)indIdeal;
+		int velIdeal = ideal.getVelOndaVerde();
+		int rojoIdeal = ideal.getTiempo(Color.ROJO);
+		int amarilloIdeal = ideal.getTiempo(Color.AMARILLO);
+		int verdeIdeal = ideal.getTiempo(Color.VERDE);
+		for(Semaforo sem : listaSemaforos){
+			sem.setVelOndaVerde(velIdeal);
+			sem.setearTiempos(rojoIdeal, amarilloIdeal, verdeIdeal);
+		}
+		System.out.println("Semaforo aplicado");
+		System.out.println("Velocidad   : " + velIdeal);
+		System.out.println("Tiempo Rojo : " + rojoIdeal);
+		System.out.println("Tiempo Verde: " + verdeIdeal);
+		System.out.println("");
 	}
 	
 	@Override

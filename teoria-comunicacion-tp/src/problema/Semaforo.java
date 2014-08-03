@@ -14,8 +14,14 @@ public class Semaforo extends Individuo {
 	 * Variable para que el retraso sea un poco menor que el tiempo justo
 	 */
 	private final int AJUSTE_RETRASO = 2;
-	private final int PORC_IDEAL_TRAFICO = 70;
+	private final double PORC_IDEAL_TRAFICO = 0.7;
 
+	private final int MIN_VELOCIDAD = 10;
+	private final int MAX_VELOCIDAD = 60;
+	private final int MIN_TIEMPO_ROJO = 10;
+	private final int MAX_TIEMPO_ROJO = 120;
+	private final int MIN_TIEMPO_VERDE = 20;
+	private final int MAX_TIEMPO_VERDE = 180;
 	private final int TIEMPO_ROJO_PREDET = 30;
 	private final int TIEMPO_AMARILLO_PREDET = 2;
 	private final int TIEMPO_VERDE_PREDET = 60;
@@ -57,12 +63,27 @@ public class Semaforo extends Individuo {
 		this.avenida = avenida;
 		this.estado = Color.ROJO;
 		this.posicion = 0;
+		setParametrosLimite(velocidad, tiempoRojo, tiempoVerde);
 		setVelOndaVerde(velocidad);
 		tiempoEstado = new Hashtable<Color, Integer>();
 		tiempoEstado.put(Color.ROJO, new Integer(tiempoRojo));
 		tiempoEstado.put(Color.AMARILLO, new Integer(TIEMPO_AMARILLO_PREDET));
 		tiempoEstado.put(Color.VERDE, new Integer(tiempoVerde));
-		evaluarAptitud();
+	}
+	
+	private void setParametrosLimite(int velocidad, int tiempoRojo, int tiempoVerde){
+		if(velocidad < MIN_VELOCIDAD)
+			velocidad = MIN_VELOCIDAD;
+		if(velocidad > MAX_VELOCIDAD)
+			velocidad = MAX_VELOCIDAD;
+		if(tiempoRojo < MIN_TIEMPO_ROJO)
+			tiempoRojo = MIN_TIEMPO_ROJO;
+		if(tiempoRojo < MAX_TIEMPO_ROJO)
+			tiempoRojo = MAX_TIEMPO_ROJO;
+		if(tiempoVerde < MIN_TIEMPO_VERDE)
+			tiempoVerde = MIN_TIEMPO_VERDE;
+		if(tiempoVerde < MAX_TIEMPO_VERDE)
+			tiempoVerde = MAX_TIEMPO_VERDE;
 	}
 	
 	public int getPos(){
@@ -197,8 +218,10 @@ public class Semaforo extends Individuo {
 		
 		//Considero que la cantidad ideal de trafico es el 70% de ocupacion
 		float ocupacion = (float)(autosVerde + autosRojo) / (float)autosMax;
+		if(ocupacion > 1)
+			ocupacion = 1;
 		ocupacion -= PORC_IDEAL_TRAFICO;
-		if(ocupacion > 0)
+		if(ocupacion < 0)
 			ocupacion *= (-1);
 		//El valor de aptitud lo obtengo de restarle a 1 la diferencia entre la ocupacion estimada y la ideal
 		aptitud = 1 - ocupacion;

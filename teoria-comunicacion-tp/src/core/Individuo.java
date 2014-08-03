@@ -6,6 +6,7 @@ public abstract class Individuo implements Comparable<Individuo>{
   protected float aptitud;
 
   public float getAptitud(){
+	evaluarAptitud();
     return aptitud;
   }
 

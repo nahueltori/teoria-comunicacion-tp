@@ -184,7 +184,7 @@ public class Tramo {
     	  return this.semaforo;
       }
       
-      public int verificarAvance(Auto autoActual, int distAvance){
+      public synchronized int verificarAvance(Auto autoActual, int distAvance){
     	   /**
            * Retorna el avance permitido verificando si tiene autos delante. 
            * Regresa la menor de las distancias

@@ -35,7 +35,7 @@ public class Poblacion{
     }
   }
 
-  public void recalcularAptitud(){
+  private void recalcularAptitud(){
     float suma = 0;
     for(Individuo indiv : individuos){
     	float aptitud = indiv.getAptitud();
