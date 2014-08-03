@@ -102,7 +102,9 @@ public class Dibujante extends JPanel {
 			for(Iterator<Auto> a = listaAutos.iterator(); a.hasNext(); ){
 				Auto auto = a.next();
 				int xAuto = auto.getPosicion() + xTramo;
-				switch (auto.getId()%7){
+				int color = Math.abs(auto.getId());
+				color = color %7;
+				switch (color){
 					case 0: g2d.setColor(java.awt.Color.BLUE); break;
 					case 1: g2d.setColor(java.awt.Color.BLACK); break;
 					case 2: g2d.setColor(java.awt.Color.CYAN); break;
