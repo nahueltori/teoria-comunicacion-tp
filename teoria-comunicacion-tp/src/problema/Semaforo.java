@@ -78,11 +78,11 @@ public class Semaforo extends Individuo {
 			velocidad = MAX_VELOCIDAD;
 		if(tiempoRojo < MIN_TIEMPO_ROJO)
 			tiempoRojo = MIN_TIEMPO_ROJO;
-		if(tiempoRojo < MAX_TIEMPO_ROJO)
+		if(tiempoRojo > MAX_TIEMPO_ROJO)
 			tiempoRojo = MAX_TIEMPO_ROJO;
 		if(tiempoVerde < MIN_TIEMPO_VERDE)
 			tiempoVerde = MIN_TIEMPO_VERDE;
-		if(tiempoVerde < MAX_TIEMPO_VERDE)
+		if(tiempoVerde > MAX_TIEMPO_VERDE)
 			tiempoVerde = MAX_TIEMPO_VERDE;
 	}
 	
