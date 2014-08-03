@@ -39,13 +39,11 @@ public class Controlador {
 		dibu.setAvenida(avenida);
 		
 		List<Individuo> listaIndividuos = crearIndividuosIniciales(avenida);
-//		Evolucion evolucion = new Evolucion(listaIndividuos, 10);
-//		evolucion.run();
+		Evolucion evolucion = new Evolucion(listaIndividuos, avenida);
+		evolucion.start();
 		
 		for(int i=0; ; i++){
 			avenida.cicloAvenida((int) (multiploCiclo * UN_SEG));
-//			System.out.println("Ciclo N° " + i);
-//			System.out.println(avenida.toString());
 			dibu.update(i, avenida.getTrafico());
 			try {
 				Thread.sleep((long) (multiploDelay * MIL_MILISEG));
@@ -54,12 +52,8 @@ public class Controlador {
 			}
 		}
 		
-/*		evolucion.evolucionar();
-		
-		Individuo resultado = evolucion.getMejorIndividuo();
-*/		
-//		System.exit(0);
 	}
+	
 	private static List<Individuo> crearIndividuosIniciales(Avenida avenida) {
 		List<Individuo> lista = new ArrayList<Individuo>();
 		Random rVelocidad = new Random();

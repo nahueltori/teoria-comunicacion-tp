@@ -60,6 +60,7 @@ public class Auto{
 	public void setVelocidad(int vel){
 		Random rand = new Random();
 		velocidad = vel;
+		//Vario levemente la velocidad, para que no vayan todos igual siempre
 		velocidad += (rand.nextInt(4) - 2);
 	}
 	

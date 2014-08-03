@@ -33,35 +33,36 @@ public class Seleccion{
   }
   
   /**
-   * M�todo que selecciona un individuo entre dos, comparando sus aptitudes y eligiendo
+   * Metodo que selecciona un individuo entre dos, comparando sus aptitudes y eligiendo
    * el mejor.
    */
   private void torneo(){
 	  List<Individuo> individuos = poblacion.getListaIndividuos();
-	  float mejorAptitud = 0;
-	  
-	  if(!individuos.isEmpty()){
-		  Individuo mejor = individuos.get(1);
-		  Iterator<Individuo> it = individuos.iterator();
-		    while(it.hasNext()){ 
-			  if (mejorAptitud < mejor.getAptitud()) {
-				  mejor = (Individuo)it.next();
+	  Individuo mejor;
+	  Individuo anterior = null;
+	  for(Individuo ind : individuos){
+		  if(anterior == null){
+			  anterior = ind;
+		  }
+		  else{
+			  if(ind.getAptitud() > anterior.getAptitud()){
+				  mejor = ind;
 			  }
-		    }
-		    
-		    this.indivSeleccionados.add(mejor);
+			  else{
+				  mejor = anterior;
+			  }
+			  indivSeleccionados.add(mejor);
+			  anterior = null;
+		  }
 	  }
   }
 
-
   /**
-   * https://www.google.com.ar/search?q=algoritmo+genetico+seleccion+ruleta
-   * 
-   * A cada uno de los individuos de la población se le asigna una parte proporcional a su ajuste de una ruleta, 
+   * A cada uno de los individuos de la poblacion se le asigna una parte proporcional a su ajuste de una ruleta, 
    * de tal forma que la suma de todos los porcentajes sea la unidad
-   * Para seleccionar un individuo basta con generar un número aleatorio del intervalo [0..1]
-   * Devolver el individuo situado en esa posición de la ruleta.
-   * Esta posición se suele obtener recorriendo los individuos de la población
+   * Para seleccionar un individuo basta con generar un numero aleatorio del intervalo [0..1]
+   * Devolver el individuo situado en esa posicion de la ruleta.
+   * Esta posicion se suele obtener recorriendo los individuos de la poblacion
    * acumulando sus proporciones de ruleta hasta que la suma exceda el valor obtenido.
    * 
    */
@@ -72,8 +73,8 @@ public class Seleccion{
 	
 	//Genero una posición aleatoria para seleccionar al individuo.
 	Random random = new Random();
-	int posicionBuscada = random.nextInt();
-	double aptitudAcumulada = 1; /* La mayor aptitud es 1 */
+	float posicionBuscada = random.nextFloat();
+	float aptitudAcumulada = 0; /* La mayor aptitud es 1 */
 	
 	//Itero hasta obtener la aptitud acumulada y el individuo correspondiente.
 	Individuo mejor = null;	
@@ -87,29 +88,27 @@ public class Seleccion{
 	 this.indivSeleccionados.add(mejor);
   }
 
-  private void grabarSeleccion(){
-	  List<Individuo> individuos = poblacion.getListaIndividuos();
-	  individuos.clear();
-	  individuos.addAll(indivSeleccionados);
-  }
-  
   /** 
-   * Método auxiliar para generar los individuos asociados a la ruleta representada
-   * por un mapa cuya clave es la proporción de la aptitud del individuo respecto
-   * de la aptitud total de la población a la que pertenece.
+   * Metodo auxiliar para generar los individuos asociados a la ruleta representada
+   * por un mapa cuya clave es la proporcion de la aptitud del individuo respecto
+   * de la aptitud total de la poblacion a la que pertenece.
    */
   private TreeMap<Float,Individuo> getListaIndividuosEnRuleta(){
 	TreeMap<Float,Individuo> ruleta = new TreeMap<Float,Individuo>();	
 	List<Individuo> individuos = poblacion.getListaIndividuos();
 	
-	//Creo el mapa cuya clave es la proporcion de aptitud respecto del total de la población.
+	//Creo el mapa cuya clave es la proporcion de aptitud respecto del total de la poblacion.
 	Iterator<Individuo> it = individuos.iterator();
 	while(it.hasNext()){
 		Individuo enRuleta = (Individuo)it.next();
-		ruleta.put(new Float(enRuleta.getAptitud() / individuos.size()), enRuleta);
+		ruleta.put(new Float(enRuleta.getAptitud() / (float)individuos.size()), enRuleta);
 	}
 	
 	return ruleta;
+  }
+  
+  private void grabarSeleccion(){
+	  poblacion.actualizarPoblacion(indivSeleccionados);
   }
   
 }

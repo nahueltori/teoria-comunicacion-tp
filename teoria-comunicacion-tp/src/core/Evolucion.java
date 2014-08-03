@@ -1,13 +1,16 @@
 package core;
-import java.util.Iterator;
 import java.util.List;
+
+import problema.Avenida;
 
 
 public class Evolucion extends Thread{
   
 	public static final int APTITUD_MINIMA = 90;
+	public static final int PORC_MUTACION = 50;
 	
   Poblacion poblacion;
+  Avenida avenida;
   
   CriterioFin criterio;
   
@@ -15,53 +18,38 @@ public class Evolucion extends Thread{
   Reproduccion reproduccion;
   Mutacion mutacion;
 
-  public Evolucion(List<Individuo> individuos, float porcMutacion){
+  public Evolucion(List<Individuo> individuos, Avenida avenida){
+    this.avenida = avenida;
     poblacion = new Poblacion(individuos);
-//    poblacion.mostrarDatos();
-   	criterio = new CriterioFinMinAptitud(poblacion, APTITUD_MINIMA);
+   	criterio = new CriterioFinMinAptitud(poblacion, PORC_MUTACION);
     
     seleccion = new Seleccion(poblacion);
     reproduccion = new Reproduccion(poblacion);
-    mutacion = new Mutacion(poblacion, porcMutacion);
+    mutacion = new Mutacion(poblacion, PORC_MUTACION);
   }
   
-  public void evolucionar(){
+  @Override
+  public void run(){
     
-    while(!criterio.terminado()){
-      
-      seleccion.seleccionar();
+	while(true){
+	    while(!criterio.terminado()){
+	        
+	        seleccion.seleccionar();
 
-      reproduccion.multipunto();
+	        reproduccion.multipunto();
 
-      mutacion.mutar();
+	        mutacion.mutar();
 
-      poblacion.pasarDeGeneracion();
+	        poblacion.pasarDeGeneracion();
 
-      poblacion.mostrarDatos();
-      
-    }
+	        poblacion.mostrarDatos();
+	        
+	    }
+	    
+	}
+    
     
   }
   
-  public Individuo getMejorIndividuo(){
-    Individuo indiv;
-    Individuo mejorIndiv;
-    List<Individuo> individuos = poblacion.getListaIndividuos();
-    Iterator<Individuo> it = individuos.iterator();
-    /** Tomo el primer individuo, para comenzar a comparar. */
-    mejorIndiv = (Individuo)it.next();
-    
-    /** Itero la lista de individuos. */
-    while(it.hasNext()){
-      indiv = (Individuo)it.next();
-      
-      /** Comparo sus aptitudes, y voy guardando el individuo de mayor aptitud. */
-      if(mejorIndiv.getAptitud() < indiv.getAptitud()){
-        mejorIndiv = indiv;
-      }
-    }
-    return mejorIndiv;
-  }
-
 }
 

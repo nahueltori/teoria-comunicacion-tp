@@ -24,7 +24,7 @@ public class Tramo {
       /**
        * Cantidad maxima de autos cada 100 metros.
        */
-      private static final int MAX_DENS_AUTOS = 10;
+      public static final int MAX_DENS_AUTOS = 10;
       
       /**
        * Lista que contiene los autos que estan transitando ese momento por el tramo representado.
@@ -66,7 +66,7 @@ public class Tramo {
        * @param tiempo El parametro tiempo es la cantidad de segundos transcurridos en el ciclo.
        * @param velocidadEl parametro velocidad está en KM/H, y es la sugerida por la Onda Verde para que transiten los autos.
        */
-      public void cicloTrafico(int tiempo){
+      public synchronized void cicloTrafico(int tiempo){
     	  semaforo.cicloSemaforo(tiempo);
     	  
     	  for(Iterator<Auto> i = autosTrafico.iterator(); i.hasNext(); ){

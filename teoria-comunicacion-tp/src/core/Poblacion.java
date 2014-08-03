@@ -1,11 +1,12 @@
 package core;
-import java.util.Iterator;
 import java.util.List;
 
 
 public class Poblacion{
 
   List<Individuo> individuos;
+  
+  Individuo mejor;
   
   int tamanioPob;
   
@@ -19,6 +20,7 @@ public class Poblacion{
     tamanioPob = individuos.size();
     nroGeneracion = 0;
     tasaCrecimiento = 0;
+    mejor = null;
   }
 
   public void pasarDeGeneracion(){
@@ -34,15 +36,19 @@ public class Poblacion{
   }
 
   public void recalcularAptitud(){
-    Individuo indiv;
     float suma = 0;
-    Iterator<Individuo> it = individuos.iterator();
-    while(it.hasNext()){
-      indiv = (Individuo)it.next();
-      suma += indiv.getAptitud();
+    for(Individuo indiv : individuos){
+    	float aptitud = indiv.getAptitud();
+        suma += aptitud;
+        if(mejor == null){
+        	mejor = indiv;
+        }
+        if(mejor.getAptitud() < aptitud){
+        	mejor = indiv;
+        }
     }
     sumaAptitudes = suma;
-    aptitudPob = sumaAptitudes / individuos.size();
+    aptitudPob = sumaAptitudes / (float)individuos.size();
   }
 
   public void mostrarDatos(){
@@ -52,8 +58,17 @@ public class Poblacion{
 	  System.out.println("");
   }
   
+  public void actualizarPoblacion(List<Individuo> individuosNuevos){
+	  individuos.clear();
+	  individuos.addAll(individuosNuevos);
+  }
+  
   public List<Individuo> getListaIndividuos(){
 	  return individuos;
+  }
+  
+  public Individuo getMejorIndividuo(){
+	  return mejor;
   }
   
   public int getTamanioPob(){

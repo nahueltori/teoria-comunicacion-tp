@@ -1,6 +1,4 @@
 package core;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -22,30 +20,27 @@ public class Mutacion{
 		int cantMutados = 0;
 		Random random = new Random();
 		List<Individuo> individuos = poblacion.getListaIndividuos();
-		List<Individuo> cantAMutarMejores = seleccionarXMejoresAptitudesAMutar();
 		
 		while(cantMutados < cantAMutar){
-			for (Individuo individuo : cantAMutarMejores) {
-				Individuo ind = (Individuo)individuos.get(random.nextInt(individuos.size() - 1));
-				ind.mutar(individuo.getAptitud());
-				cantMutados++;
-			}
+			Individuo ind = (Individuo)individuos.get(random.nextInt(individuos.size() - 1));
+			ind.mutar();
+			cantMutados++;
 		}
-		
 	}
 	
 	/**
 	 * Selecciona los X mejores siendo X la cantidad a mutar seteada.
 	 */
-	private List<Individuo> seleccionarXMejoresAptitudesAMutar() {
-		
-		List<Individuo> lista = new ArrayList<Individuo>(poblacion.getListaIndividuos());
-		Collections.sort(lista);
-		int from = lista.size() - cantAMutar;
-		
-		return lista.subList(from, lista.size());
-		
-	}
+	//Por ahora no lo usamos
+//	private List<Individuo> seleccionarXMejoresAptitudesAMutar() {
+//		
+//		List<Individuo> lista = new ArrayList<Individuo>(poblacion.getListaIndividuos());
+//		Collections.sort(lista);
+//		int from = lista.size() - cantAMutar;
+//		
+//		return lista.subList(from, lista.size());
+//		
+//	}
 
 }
 

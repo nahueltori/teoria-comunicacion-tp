@@ -3,9 +3,9 @@ package core;
 
 public abstract class Individuo implements Comparable<Individuo>{
 
-  protected double aptitud;
+  protected float aptitud;
 
-  public double getAptitud(){
+  public float getAptitud(){
     return aptitud;
   }
 
@@ -21,8 +21,8 @@ public abstract class Individuo implements Comparable<Individuo>{
   public abstract void evaluarAptitud();
 
 	/** 
-	 * M�todo para mutar al individuo. */
-  public abstract void mutar(double aptitud);
+	 * Metodo para mutar al individuo. */
+  public abstract void mutar();
 
 	/** 
 	 * M�todo para reproducir un nuevo individuo, cruz�ndolo con otro. */

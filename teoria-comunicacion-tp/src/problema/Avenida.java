@@ -195,6 +195,15 @@ public class Avenida {
 		return tramo.getLongitudTotal();
 	}
 	
+	/** 
+	 * Metodo usado para aplicar al modelo actual el mejor semaforo encontrado
+	 * por el algoritmo genetico.
+	 * @param ideal
+	 */
+	public void aplicarSemaforo(Semaforo ideal){
+		
+	}
+	
 	@Override
 	public String toString(){
 		String avenida = "";
