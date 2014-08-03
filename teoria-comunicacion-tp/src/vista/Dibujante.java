@@ -101,7 +101,7 @@ public class Dibujante extends JPanel {
 		// Dibujo todos los autos del tramo
 			for(Iterator<Auto> a = listaAutos.iterator(); a.hasNext(); ){
 				Auto auto = a.next();
-				int xAuto = auto.getPosicion() + xTramo;
+				int xAuto = auto.getPosicion() + xTramo -ANCHOAUTO;
 				int color = Math.abs(auto.getId());
 				color = color %7;
 				switch (color){
@@ -116,7 +116,7 @@ public class Dibujante extends JPanel {
 				g2d.fillOval(xAuto, YAUTO, ANCHOAUTO, ALTOAUTO);
 			}
 		// Termina el tramo y dibujo el semaforo
-			int xSemaforo = xTramo + tramo.getLongitud()+ANCHOAUTO;
+			int xSemaforo = xTramo + tramo.getLongitud();
 			Semaforo s = tramo.getSemaforo();
 			problema.Semaforo.Color estadoSemaforo = s.getColor();
 			if ( estadoSemaforo == problema.Semaforo.Color.ROJO ) 
@@ -128,7 +128,8 @@ public class Dibujante extends JPanel {
 			g2d.fillOval(xSemaforo, YSEMAFORO, ANCHOSEMAFORO, ALTOSEMAFORO);
 			
 		// Me posiciono en el proximo tramo	
-			xTramo = xTramo + tramo.getLongitud()+ANCHOAUTO;
+			xTramo = xTramo + tramo.getLongitud();
+
 		}
 	}	
 
