@@ -1,6 +1,7 @@
 package problema;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,10 +14,6 @@ import core.Individuo;
 
 public class Avenida {
 
-	private static int MANANA = 500;
-	private static int TARDE = 1000;
-	private static int NOCHE = 1500;
-	
 	static private int UN_MILISEG = 1;
 	static private int MIL_MILISEG = 1000;
 	
@@ -37,8 +34,25 @@ public class Avenida {
 		private int hora;
 		private int tiempo;
 		private boolean ejecutar;
-		
+		private int manana;
+		private int tarde;
+		private int noche;
+		private int autosManana;
+		private int autosTarde;
+		private int autosNoche;
+				
 		Trafico(){
+			try {
+				Scanner paramTrafico = new Scanner(new BufferedReader(new FileReader("data/trafico.txt")));
+				manana = paramTrafico.nextInt();
+				autosManana = paramTrafico.nextInt();
+				tarde = paramTrafico.nextInt();
+				autosTarde = paramTrafico.nextInt();
+				noche = paramTrafico.nextInt();
+				autosNoche = paramTrafico.nextInt();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
 			tiempo = 0;
 			hora = 0;
 			ejecutar = true;
@@ -59,18 +73,18 @@ public class Avenida {
 				if(tiempo > 0){
 					int varAleatCantidad = 0;
 					hora += tiempo;
-					if(hora < MANANA){
-						varAleatCantidad = rand.nextInt(2); 
+					if(hora < manana){
+						varAleatCantidad = rand.nextInt(autosManana); 
 					}
 					else{
-						if(hora < TARDE){
-							varAleatCantidad = rand.nextInt(5);
+						if(hora < tarde){
+							varAleatCantidad = rand.nextInt(autosTarde);
 						}
 						else{
-							if(hora < NOCHE){
-								varAleatCantidad = rand.nextInt(2);
+							if(hora < noche){
+								varAleatCantidad = rand.nextInt(autosNoche);
 							}else{
-									varAleatCantidad = rand.nextInt(5);
+									varAleatCantidad = rand.nextInt(autosManana);
 								}
 						}
 					}
