@@ -37,6 +37,7 @@ public class Poblacion{
 
   private void recalcularAptitud(){
     float suma = 0;
+    mejor = null;
     for(Individuo indiv : individuos){
     	float aptitud = indiv.getAptitud();
         suma += aptitud;
@@ -66,7 +67,7 @@ public class Poblacion{
   public List<Individuo> getListaIndividuos(){
 	  return individuos;
   }
-  
+
   public Individuo getMejorIndividuo(){
 	  return mejor;
   }
@@ -84,7 +85,9 @@ public class Poblacion{
   }
   
   public float getAptitudPob(){
-	  return aptitudPob;
+	  if(mejor == null)
+		  return 0;
+	  return mejor.getAptitud();
   }
   
   public float getSumaAptitudes(){

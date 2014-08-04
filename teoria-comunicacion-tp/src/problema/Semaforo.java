@@ -234,9 +234,9 @@ public class Semaforo extends Individuo {
 	public void mutar() {		
 		Random rand = new Random();
 		setVelOndaVerde(velOndaVerde + (rand.nextInt(4) - 2));
-		setearTiempos(getTiempo(Color.ROJO) + (rand.nextInt(10) - 5), 
+		setearTiempos(getTiempo(Color.ROJO) + (rand.nextInt(6) - 3), 
 				getTiempo(Color.AMARILLO), 
-				getTiempo(Color.VERDE) + (rand.nextInt(10) - 5));
+				getTiempo(Color.VERDE) + (rand.nextInt(6) - 3));
 	}
 
 	/**

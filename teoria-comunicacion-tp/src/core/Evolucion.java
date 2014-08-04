@@ -60,7 +60,7 @@ public class Evolucion extends Thread{
 	    }
 	    avenida.aplicarResultado(poblacion.getMejorIndividuo());
 	    
-	    //Recalculo de un nuevo semaforo cada 5 segundos
+	    //Recalculo un nuevo semaforo cada 5 segundos
 		try {
 			sleep(5000);
 		} catch (InterruptedException e) {

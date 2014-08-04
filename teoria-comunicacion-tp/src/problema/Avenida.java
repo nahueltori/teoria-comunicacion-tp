@@ -30,13 +30,13 @@ public class Avenida {
 	private int contAutos;
 	private int contSegundos;
 	private float indTrafico;
-	private int hora;
-	private int id = 0;
+	private boolean traficoIniciado = false;
 	
 	private class Trafico extends Thread{
 			
 		private int hora;
 		private int tiempo;
+		private String indicador;
 		private boolean ejecutar;
 		
 		Trafico(){
@@ -49,44 +49,58 @@ public class Avenida {
 			this.tiempo = tiempo;
 		}
 		
+		public void setParams(String indicador){
+			this.indicador = indicador;
+		}
+		
 		@Override
 		public void run(){
 			/**
 			 * Metodo que se encarga de generar aleatoriamente trafico, dependiendo del horario del dia.
 			 */
+			traficoIniciado = true;
 			Random rand = new Random();
 			while(ejecutar){
-				if(tiempo > 0){
-					int varAleatCantidad = 0;
-					hora += tiempo;
-					if(hora < MANANA){
-						varAleatCantidad = rand.nextInt(4); 
-					}
-					else{
-						if(hora < TARDE){
-							varAleatCantidad = rand.nextInt(1);
+				//Si el metodo de entrada de autos es manual, creo uno nuevo con cada Enter.
+				if(indicador.equals("M")){
+					Scanner key = new Scanner(System.in);
+					key.nextLine();
+					recibirAuto();
+				}
+				else{
+					//Si el metodo es automatico, creo autos aleatoriamente segun el tiempo de ejecucion.
+					if(tiempo > 0){
+						int varAleatCantidad = 0;
+						hora += tiempo;
+						if(hora < MANANA){
+							varAleatCantidad = rand.nextInt(1); 
 						}
 						else{
-							if(hora < NOCHE){
-								varAleatCantidad = rand.nextInt(4);
-							}else{
-									varAleatCantidad = rand.nextInt(2);
-								}
+							if(hora < TARDE){
+								varAleatCantidad = rand.nextInt(5);
+							}
+							else{
+								if(hora < NOCHE){
+									varAleatCantidad = rand.nextInt(1);
+								}else{
+										varAleatCantidad = rand.nextInt(2);
+									}
+							}
+						}
+						for(int i=0; i<varAleatCantidad; i++){
+							recibirAuto();
+							try {
+								sleep(MIL_MILISEG / varAleatCantidad);
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							}
 						}
 					}
-					for(int i=0; i<varAleatCantidad; i++){
-						recibirAuto();
-						try {
-							sleep(MIL_MILISEG / varAleatCantidad);
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
+					try {
+						sleep(UN_MILISEG);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
 					}
-				}
-				try {
-					sleep(UN_MILISEG);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
 				}
 			}
 		}
@@ -98,11 +112,12 @@ public class Avenida {
 		contSegundos = 0;
 		indTrafico = 0;
 		trafico = new Trafico();
-		trafico.start();
 		listaSemaforos = new ArrayList<Semaforo>();
 		listaTramos = new CopyOnWriteArrayList<Tramo>();
 		try {
-			parametros = new Scanner(new BufferedReader(new FileReader("data/tramos.txt")));
+			parametros = new Scanner(new BufferedReader(new FileReader("data/avenida.txt")));
+			String indTrafico = parametros.next();
+			trafico.setParams(indTrafico);
 			Tramo tramoAnt = null;
 			int i = 0;
 			while(parametros.hasNext()){
@@ -150,6 +165,7 @@ public class Avenida {
 	public void cicloAvenida(int tiempo){
 		contSegundos += tiempo;
 		trafico.setParams(tiempo);
+		iniciarTrafico();
 		for(Tramo tramo : listaTramos){
 			tramo.cicloTrafico(tiempo);
 		}
@@ -159,8 +175,12 @@ public class Avenida {
 		}
 	}
 	
+	private void iniciarTrafico(){
+		if(!traficoIniciado)
+			trafico.start();
+	}
 	/**
-	 * Metodo que se encarga de generar aleatoriamente trafico, dependiendo del horario del dia.
+	 * Metodo que recibe el trafico.
 	 */
 	private void recibirAuto(){
 		Random idAuto = new Random();
