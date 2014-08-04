@@ -63,7 +63,9 @@ public class Semaforo extends Individuo {
 		this.avenida = avenida;
 		this.estado = Color.ROJO;
 		this.posicion = 0;
-		setParametrosLimite(velocidad, tiempoRojo, tiempoVerde);
+		velocidad = limiteVelocidad(velocidad);
+		tiempoRojo = limiteTiempoRojo(tiempoRojo);
+		tiempoVerde = limiteTiempoVerde(tiempoVerde);
 		setVelOndaVerde(velocidad);
 		tiempoEstado = new Hashtable<Color, Integer>();
 		tiempoEstado.put(Color.ROJO, new Integer(tiempoRojo));
@@ -71,21 +73,30 @@ public class Semaforo extends Individuo {
 		tiempoEstado.put(Color.VERDE, new Integer(tiempoVerde));
 	}
 	
-	private void setParametrosLimite(int velocidad, int tiempoRojo, int tiempoVerde){
+	private int limiteVelocidad(int velocidad){
 		if(velocidad < MIN_VELOCIDAD)
 			velocidad = MIN_VELOCIDAD;
 		if(velocidad > MAX_VELOCIDAD)
 			velocidad = MAX_VELOCIDAD;
-		if(tiempoRojo < MIN_TIEMPO_ROJO)
-			tiempoRojo = MIN_TIEMPO_ROJO;
-		if(tiempoRojo > MAX_TIEMPO_ROJO)
-			tiempoRojo = MAX_TIEMPO_ROJO;
+		return velocidad;
+	}
+	
+	private int limiteTiempoVerde(int tiempoVerde){
 		if(tiempoVerde < MIN_TIEMPO_VERDE)
 			tiempoVerde = MIN_TIEMPO_VERDE;
 		if(tiempoVerde > MAX_TIEMPO_VERDE)
 			tiempoVerde = MAX_TIEMPO_VERDE;
+		return tiempoVerde;
 	}
 	
+	private int limiteTiempoRojo(int tiempoRojo){
+		if(tiempoRojo < MIN_TIEMPO_ROJO)
+			tiempoRojo = MIN_TIEMPO_ROJO;
+		if(tiempoRojo > MAX_TIEMPO_ROJO)
+			tiempoRojo = MAX_TIEMPO_ROJO;
+		return tiempoRojo;
+	}
+		
 	public int getPos(){
 		return posicion;
 	}
@@ -95,8 +106,7 @@ public class Semaforo extends Individuo {
 	}
 	
 	public synchronized void setVelOndaVerde(int vel){
-		setParametrosLimite(vel,0,0);
-		velOndaVerde = vel;
+		velOndaVerde = limiteVelocidad(vel);
 		setRetraso();
 	}
 	
@@ -171,7 +181,8 @@ public class Semaforo extends Individuo {
 	 * Se actualiza concurrentemente desde el hilo del algoritmo gen�tico.
 	 */
 	public synchronized void setearTiempos(int rojo, int amarillo, int verde){
-		setParametrosLimite(0,rojo,verde);
+		rojo = limiteTiempoRojo(rojo);
+		verde = limiteTiempoVerde(verde);
 		tiempoEstado.put(Color.ROJO, new Integer(rojo));
 		tiempoEstado.put(Color.AMARILLO, new Integer(amarillo));
 		tiempoEstado.put(Color.VERDE, new Integer(verde));
