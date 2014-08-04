@@ -95,6 +95,7 @@ public class Semaforo extends Individuo {
 	}
 	
 	public synchronized void setVelOndaVerde(int vel){
+		setParametrosLimite(vel,0,0);
 		velOndaVerde = vel;
 		setRetraso();
 	}
@@ -170,6 +171,7 @@ public class Semaforo extends Individuo {
 	 * Se actualiza concurrentemente desde el hilo del algoritmo gen�tico.
 	 */
 	public synchronized void setearTiempos(int rojo, int amarillo, int verde){
+		setParametrosLimite(0,rojo,verde);
 		tiempoEstado.put(Color.ROJO, new Integer(rojo));
 		tiempoEstado.put(Color.AMARILLO, new Integer(amarillo));
 		tiempoEstado.put(Color.VERDE, new Integer(verde));

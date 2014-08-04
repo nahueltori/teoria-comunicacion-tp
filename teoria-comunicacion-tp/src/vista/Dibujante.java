@@ -5,6 +5,8 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -14,8 +16,8 @@ import javax.swing.JPanel;
 
 import problema.Auto;
 import problema.Avenida;
-import problema.Tramo;
 import problema.Semaforo;
+import problema.Tramo;
 
 @SuppressWarnings("serial")
 public class Dibujante extends JPanel {
@@ -47,8 +49,19 @@ public class Dibujante extends JPanel {
     	frame.setVisible(true);
     	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     	this.frame = frame;
+    	this.frame.addKeyListener(new KeyListener() {
+    	    public void keyPressed(KeyEvent e) { crearTrafico(); }
+
+    	    public void keyReleased(KeyEvent e) { }
+
+    	    public void keyTyped(KeyEvent e) { }
+    	});
     	this.avenida = a;
     }
+	
+	private void crearTrafico(){
+		avenida.crearAuto();
+	}
 
 	/**
 	* Recibe como parametro el numero de segundos, y el estado del trafico en ese momento.

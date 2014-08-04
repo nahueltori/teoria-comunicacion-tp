@@ -186,6 +186,16 @@ public class Tramo {
     	  return this.semaforo;
       }
       
+      /**
+       * Actualiza la velocidad indicada por la Onda Verde.
+       * @param vel
+       */
+      public synchronized void actualizarVelocidad(int vel){
+    	  for(Auto auto : autosTrafico){
+    		  auto.setVelocidad(vel);
+    	  }
+      }
+      
       public synchronized int verificarAvance(Auto autoActual, int distAvance){
     	   /**
            * Retorna el avance permitido verificando si tiene autos delante. 

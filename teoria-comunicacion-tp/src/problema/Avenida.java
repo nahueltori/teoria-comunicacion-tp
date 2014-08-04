@@ -26,17 +26,16 @@ public class Avenida {
 	
 	private Tramo inicioAv;
 	private Trafico trafico;
+	private String paramTrafico;
 	
 	private int contAutos;
 	private int contSegundos;
 	private float indTrafico;
-	private boolean traficoIniciado = false;
 	
 	private class Trafico extends Thread{
 			
 		private int hora;
 		private int tiempo;
-		private String indicador;
 		private boolean ejecutar;
 		
 		Trafico(){
@@ -49,58 +48,45 @@ public class Avenida {
 			this.tiempo = tiempo;
 		}
 		
-		public void setParams(String indicador){
-			this.indicador = indicador;
-		}
-		
 		@Override
 		public void run(){
 			/**
 			 * Metodo que se encarga de generar aleatoriamente trafico, dependiendo del horario del dia.
 			 */
-			traficoIniciado = true;
 			Random rand = new Random();
 			while(ejecutar){
-				//Si el metodo de entrada de autos es manual, creo uno nuevo con cada Enter.
-				if(indicador.equals("M")){
-					Scanner key = new Scanner(System.in);
-					key.nextLine();
-					recibirAuto();
-				}
-				else{
-					//Si el metodo es automatico, creo autos aleatoriamente segun el tiempo de ejecucion.
-					if(tiempo > 0){
-						int varAleatCantidad = 0;
-						hora += tiempo;
-						if(hora < MANANA){
-							varAleatCantidad = rand.nextInt(1); 
+				//Si el metodo es automatico, creo autos aleatoriamente segun el tiempo de ejecucion.
+				if(tiempo > 0){
+					int varAleatCantidad = 0;
+					hora += tiempo;
+					if(hora < MANANA){
+						varAleatCantidad = rand.nextInt(2); 
+					}
+					else{
+						if(hora < TARDE){
+							varAleatCantidad = rand.nextInt(5);
 						}
 						else{
-							if(hora < TARDE){
-								varAleatCantidad = rand.nextInt(5);
-							}
-							else{
-								if(hora < NOCHE){
-									varAleatCantidad = rand.nextInt(1);
-								}else{
-										varAleatCantidad = rand.nextInt(2);
-									}
-							}
-						}
-						for(int i=0; i<varAleatCantidad; i++){
-							recibirAuto();
-							try {
-								sleep(MIL_MILISEG / varAleatCantidad);
-							} catch (InterruptedException e) {
-								e.printStackTrace();
-							}
+							if(hora < NOCHE){
+								varAleatCantidad = rand.nextInt(2);
+							}else{
+									varAleatCantidad = rand.nextInt(5);
+								}
 						}
 					}
-					try {
-						sleep(UN_MILISEG);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
+					for(int i=0; i<varAleatCantidad; i++){
+						recibirAuto();
+						try {
+							sleep(MIL_MILISEG / varAleatCantidad);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
 					}
+				}
+				try {
+					sleep(UN_MILISEG);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
 				}
 			}
 		}
@@ -116,8 +102,9 @@ public class Avenida {
 		listaTramos = new CopyOnWriteArrayList<Tramo>();
 		try {
 			parametros = new Scanner(new BufferedReader(new FileReader("data/avenida.txt")));
-			String indTrafico = parametros.next();
-			trafico.setParams(indTrafico);
+			paramTrafico = parametros.next();
+			if(paramTrafico.equals("A"))
+				trafico.start();
 			Tramo tramoAnt = null;
 			int i = 0;
 			while(parametros.hasNext()){
@@ -165,7 +152,6 @@ public class Avenida {
 	public void cicloAvenida(int tiempo){
 		contSegundos += tiempo;
 		trafico.setParams(tiempo);
-		iniciarTrafico();
 		for(Tramo tramo : listaTramos){
 			tramo.cicloTrafico(tiempo);
 		}
@@ -175,12 +161,8 @@ public class Avenida {
 		}
 	}
 	
-	private void iniciarTrafico(){
-		if(!traficoIniciado)
-			trafico.start();
-	}
 	/**
-	 * Metodo que recibe el trafico.
+	 * Metodo que recibe el trafico y crea autos en la avenida.
 	 */
 	private void recibirAuto(){
 		Random idAuto = new Random();
@@ -188,6 +170,14 @@ public class Avenida {
 			inicioAv.recibirTrafico(new Auto(idAuto.nextInt()));
 			contAutos++;
 		}
+	}
+	
+	/**
+	 * Metodo para recibir trafico desde el exterior, manualmente.
+	 */
+	public void crearAuto(){
+		if(paramTrafico.equals("M"))
+			recibirAuto();
 	}
 	
 	/**
@@ -233,6 +223,9 @@ public class Avenida {
 		for(Semaforo sem : listaSemaforos){
 			sem.setVelOndaVerde(velIdeal);
 			sem.setearTiempos(rojoIdeal, amarilloIdeal, verdeIdeal);
+		}
+		for(Tramo tramo : listaTramos){
+			tramo.actualizarVelocidad(velIdeal);
 		}
 		System.out.println("Semaforo aplicado");
 		System.out.println("Velocidad   : " + velIdeal);
