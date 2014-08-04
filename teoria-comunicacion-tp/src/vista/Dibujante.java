@@ -7,6 +7,7 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -80,7 +81,7 @@ public class Dibujante extends JPanel {
 		List<Tramo> listaTramos = avenida.getTramos();
 		for(Iterator<Tramo> t = listaTramos.iterator(); t.hasNext(); ){
 			Tramo tramo = t.next();
-			List<Auto> listaAutos = tramo.getAutos();
+			ConcurrentLinkedQueue<Auto> listaAutos = tramo.getAutos();
 			
 		// Dibujo del tramo
 			g2d.setColor(java.awt.Color.GRAY);

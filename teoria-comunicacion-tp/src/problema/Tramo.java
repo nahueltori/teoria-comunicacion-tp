@@ -1,8 +1,10 @@
 package problema;
 
-import java.util.ArrayList;
+
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.ConcurrentLinkedQueue;
+
 public class Tramo {
 	
 	private static int ANCHOAUTO     =   10;	
@@ -29,7 +31,7 @@ public class Tramo {
       /**
        * Lista que contiene los autos que estan transitando ese momento por el tramo representado.
        */ 
-      private List<Auto> autosTrafico;
+      private ConcurrentLinkedQueue<Auto> autosTrafico;
       
       /**
        * Conexion al tramo anterior de trafico.
@@ -48,7 +50,7 @@ public class Tramo {
       private Semaforo semaforo;
       
       public Tramo(int longitud){
-    	  autosTrafico = new ArrayList<Auto>();
+    	  autosTrafico = new ConcurrentLinkedQueue<Auto>();
           this.longitud = longitud;
           this.longitudTotal = longitud;
       }
@@ -64,7 +66,7 @@ public class Tramo {
        * siguiente, se elimina.
        * Tambien setea a cada auto la velocidad aconsejada por la Onda Verde.
        * @param tiempo El parametro tiempo es la cantidad de segundos transcurridos en el ciclo.
-       * @param velocidadEl parametro velocidad está en KM/H, y es la sugerida por la Onda Verde para que transiten los autos.
+       * @param velocidadEl parametro velocidad estï¿½ en KM/H, y es la sugerida por la Onda Verde para que transiten los autos.
        */
       public synchronized void cicloTrafico(int tiempo){
     	  semaforo.cicloSemaforo(tiempo);
@@ -72,7 +74,7 @@ public class Tramo {
     	  for(Iterator<Auto> i = autosTrafico.iterator(); i.hasNext(); ){
     		  Auto auto = i.next();
     		  
-        	  /* Evaluo si el auto llegó al final del tramo, si el semaforo permite pasar y 
+        	  /* Evaluo si el auto llegï¿½ al final del tramo, si el semaforo permite pasar y 
         	   * hay lugar en el siguiente tramo, lo paso al siguiente. */
     		  if(auto.getPosicion() >= longitud){
     			  if(semaforo.puedoPasar()){
@@ -101,7 +103,7 @@ public class Tramo {
       
       /**
        * Metodo que agrega un auto al tramo de trafico actual.
-       * Reinicia sus datos de posición, y le setea la velocidad recomendada por la Onda Verde.
+       * Reinicia sus datos de posiciï¿½n, y le setea la velocidad recomendada por la Onda Verde.
        */
       public void recibirTrafico(Auto auto){
     	  auto.reiniciar(longitud);
@@ -171,7 +173,7 @@ public class Tramo {
     	  return tramo;
       }
 
-      public List<Auto> getAutos(){
+      public ConcurrentLinkedQueue<Auto> getAutos(){
     	  return this.autosTrafico;
       }
       public int getLongitud(){
