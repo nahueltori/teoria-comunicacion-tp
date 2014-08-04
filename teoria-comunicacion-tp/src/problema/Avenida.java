@@ -40,16 +40,22 @@ public class Avenida {
 		private int autosManana;
 		private int autosTarde;
 		private int autosNoche;
+		private int delayManana;
+		private int delayTarde;
+		private int delayNoche;
 				
 		Trafico(){
 			try {
 				Scanner paramTrafico = new Scanner(new BufferedReader(new FileReader("data/trafico.txt")));
 				manana = paramTrafico.nextInt();
 				autosManana = paramTrafico.nextInt();
+				delayManana = paramTrafico.nextInt();
 				tarde = paramTrafico.nextInt();
 				autosTarde = paramTrafico.nextInt();
+				delayTarde = paramTrafico.nextInt();
 				noche = paramTrafico.nextInt();
 				autosNoche = paramTrafico.nextInt();
+				delayNoche = paramTrafico.nextInt();
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			}
@@ -68,23 +74,30 @@ public class Avenida {
 			 * Metodo que se encarga de generar aleatoriamente trafico, dependiendo del horario del dia.
 			 */
 			Random rand = new Random();
+			int delay = 0;
 			while(ejecutar){
-				//Si el metodo es automatico, creo autos aleatoriamente segun el tiempo de ejecucion.
+				//Si el metodo es automatico, creo autossegun el tiempo de ejecucion.
 				if(tiempo > 0){
 					int varAleatCantidad = 0;
 					hora += tiempo;
 					if(hora < manana){
-						varAleatCantidad = rand.nextInt(autosManana); 
+//						varAleatCantidad = rand.nextInt(autosManana);
+						varAleatCantidad = autosManana;
+						delay = delayManana;
 					}
 					else{
 						if(hora < tarde){
-							varAleatCantidad = rand.nextInt(autosTarde);
+//							varAleatCantidad = rand.nextInt(autosTarde);
+							varAleatCantidad = autosTarde;
+							delay = delayTarde;
 						}
 						else{
 							if(hora < noche){
 								varAleatCantidad = rand.nextInt(autosNoche);
+								delay = delayNoche;
 							}else{
 									varAleatCantidad = rand.nextInt(autosManana);
+									delay = delayManana;
 								}
 						}
 					}
@@ -98,7 +111,7 @@ public class Avenida {
 					}
 				}
 				try {
-					sleep(UN_MILISEG);
+					sleep(UN_MILISEG + (MIL_MILISEG * delay));
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
