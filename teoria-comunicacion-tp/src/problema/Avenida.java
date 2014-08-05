@@ -15,6 +15,7 @@ import core.Individuo;
 public class Avenida {
 
 	static private int UN_MILISEG = 1;
+	static private int CIEN_MILISEG = 1000;
 	static private int MIL_MILISEG = 1000;
 	
 	private List<Semaforo> listaSemaforos;
@@ -104,7 +105,7 @@ public class Avenida {
 					for(int i=0; i<varAleatCantidad; i++){
 						recibirAuto();
 						try {
-							sleep(MIL_MILISEG / varAleatCantidad);
+							sleep(CIEN_MILISEG / varAleatCantidad);
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}

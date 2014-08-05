@@ -15,6 +15,8 @@ public class Semaforo extends Individuo {
 	 */
 	private final int AJUSTE_RETRASO = 2;
 	private final double PORC_IDEAL_TRAFICO = 0.7;
+	private final float PORC_AJUSTE_TRAFICO = (float) 0.7;
+	private final float PORC_AJUSTE_VELOC = (float) 0.3;
 
 	private final int MIN_VELOCIDAD = 10;
 	private final int MAX_VELOCIDAD = 60;
@@ -237,7 +239,9 @@ public class Semaforo extends Individuo {
 		if(ocupacion < 0)
 			ocupacion *= (-1);
 		//El valor de aptitud lo obtengo de restarle a 1 la diferencia entre la ocupacion estimada y la ideal
-		aptitud = 1 - ocupacion;
+		float aptitudTrafico = 1 - ocupacion;
+		float aptitudVelocidad = (float)velOndaVerde / (float)MAX_VELOCIDAD;
+		aptitud = aptitudTrafico * PORC_AJUSTE_TRAFICO + aptitudVelocidad * PORC_AJUSTE_VELOC;
 	}
 	
 	/**
